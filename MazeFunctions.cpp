@@ -1,0 +1,4 @@
+
+bool alwaysTrue() {
+    return true;
+}
