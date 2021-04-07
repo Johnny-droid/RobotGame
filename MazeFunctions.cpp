@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
 vector<vector<char>> readFile(string filename) {
@@ -30,6 +31,77 @@ vector<vector<char>> readFile(string filename) {
     return maze;
 }
 
+void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
+    cout << "-------------" << endl;
+    cout << "| Q | W | E |" << endl;
+    cout << "-------------" << endl;
+    cout << "| A | S | D |" << endl;
+    cout << "-------------" << endl;
+    cout << "| Z | X | C |" << endl;
+    cout << "-------------" << endl;
+
+    char ch;
+    int y, x;
+    do {
+        do {
+            cout << "Enter key: ";
+            cin >> ch;
+            ch = toupper(ch);
+            if ((ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' ) || cin.fail()) {
+                cin.clear();
+                cin.ignore(100000, '\n');
+                cout << "Invalid input!\n";
+            }
+            
+        } while (ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' );
+        
+        y = h[0];
+        x = h[1];
+        switch (ch) {
+            case 'Q':
+                y--;
+                x--;
+                break;
+            case 'W':
+                y--;
+                break;
+            case 'E':
+                y--;
+                x++;
+                break;
+            case 'A':
+                x--;
+                break;
+            case 'D':
+                x++;
+                break;
+            case 'Z':
+                y++;
+                x--;
+                break;
+            case 'X':
+                y++;
+                break;
+            case 'C':
+                y++;
+                x++;
+                break;
+            default:
+                break;
+        };
+
+        if (maze[y][x] == '*') {
+            cout << "You can't move to a fence! Do you want to die?! " << endl;
+        }
+    } while (maze[y][x] == '*');
+    
+    h[0] = y;
+    h[1] = x;
+
+}
+
+
+
 void showMaze(const vector<vector<char>> &v) { 
     // prints out the maze
     for (int i = 0; i < v.size(); i++) {
@@ -53,7 +125,7 @@ void showCoordinates_R(const vector<vector<int>> &v) {
 int menu() {
     // returns 0 Exit, 1 Rules, 2 Play
     int x;
-    cout << "1) Rules \n2)Play \n0)Exit\n";
+    cout << "1) Rules \n2) Play \n0) Exit\n";
     do {
         cout << "Enter option: ";
         cin >> x;
@@ -78,6 +150,18 @@ vector<vector<int>> getRobotsXY(const vector<vector<char>> &maze) {
         }
     }
     return v;
+}
+
+vector<int> getHumanXY(const vector<vector<char>> &maze) {
+    vector<int> v;
+    for (int i = 0; i < maze.size(); i++) {
+        for (int j = 0; j < maze[i].size(); j++) {
+            if (maze[i][j] == 'H') {
+                return {i, j};
+            }
+        }
+    }
+    return {-1};
 }
 
 void updateRobotsXY(vector<vector<int>> &v, const vector<int> &h) {
@@ -132,7 +216,7 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
         }
     }
 
-    //check for robots collisions (robots with equal coordinates)
+    //check for robots collisions (robots with equal coordinates) and deletes them
     for (int i = 0; i < v.size()-1; i++) {
         bool equal_found = false;
         for (int j = i+1; j < v.size(); j++) {
@@ -154,17 +238,15 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
         maze[v[i][0]][v[i][1]] = 'R';
     }
 
-    //check if the human is alive...
-    // killed by robot
+    // redraw human 
+    maze[h[0]][h[1]] = 'H';
+
+    //check if the human is alive
     for (int i = 0; i < v.size(); i++) {
         if (v[i] == h) {
             maze[h[0]][h[1]] = 'h';
             break;
         }
-    }
-    //killed by eletric fence
-    if (maze[h[0]][h[1]] == '*') {
-        maze[h[0]][h[1]] = 'h';
     }
 
 }
@@ -174,11 +256,11 @@ int checkGameOver(const vector<vector<char>> &maze) {
     // 0 - continue, 1 - robots win, 2 - hero/human wins
     for (int i = 0; i < maze.size(); i++) {
         for (int j = 0; j < maze[i].size(); j++) {
-            if (maze[i][j] == 'R') {
-                return 0;
-            }
             if (maze[i][j] == 'h') {
                 return 1;
+            }
+            if (maze[i][j] == 'R') {
+                return 0;
             }
         }
     }
@@ -186,49 +268,23 @@ int checkGameOver(const vector<vector<char>> &maze) {
 
 }
 
-void GameOver(int x, int time, string filename) {
-    // check if it won, and if so
-    // ask the name
-    // sort the winning times
-    // not finished yet!!
-    if (x == 2) {
-        ifstream file;
-        file.open(filename);
-        if (!file.is_open()) {
-            cout << "File not found" << endl;
-        } else {
-            string winner = readName();
-            string line, player;
-            int time_players;
-            size_t pos;
-            getline(file, line);   // ignore the first 2 lines of the file
-            getline(file, line);   // Lines: (Player - Time) and (---------)
-            while (getline(file, line)) {
-                player = line.substr(0, 15);
-                pos = line.find('-');
-                time_players = (int) strip(line.substr(pos+1));   //strip time
-            }
+struct Player {
+    string name;
+    int time;
+};
 
-            file.close();
-        }
-    }
+string strip(string str) {
+    // removes the leading and trailing whitespaces of a string
+    size_t start = str.find_first_not_of(' ');
+    size_t end = str.find_last_not_of(' ');
+    return str.substr(start, end-start+1);
 }
 
-// sorting function to sort the times of the winners
-void bubbleSort(vector<int> &v) {
-    int aux;
-    bool change = true;
-    while (change) {
-        change = false;
-        for (int i = 0; i < v.size()-1; i++) {
-            if (v[i] > v[i+1] ) {
-                change = true;
-                aux = v[i];
-                v[i] = v[i+1];
-                v[i+1] = aux;
-            }
-        }
+string fill15(string name) {
+    while (name.length() < 15) {
+        name += ' ';
     }
+    return name; 
 }
 
 string readName() {
@@ -245,28 +301,99 @@ string readName() {
         }
     } while (name.length() > 15);
 
-    while (name.length() < 15) {
-        name += ' ';
-    }
-    return name;    
+    return fill15(name);  
 }
 
+void bubbleSort(vector<Player> &v) {
+    // sorting function to sort the times of the winners
+    Player aux;
+    bool change = true;
+    while (change) {
+        change = false;
+        for (int i = 0; i < v.size()-1; i++) {
+            if (v[i].time > v[i+1].time ) {
+                change = true;
+                aux = v[i];
+                v[i] = v[i+1];
+                v[i+1] = aux;
+            }
+        }
+    }
+}
 
+void gameOver(int x, int time, string filename) {
+    // check if it won, and if so
+    // ask the name
+    // sort the winning times
+    if (x == 2) {
+        cout << "Congratulations, you won!!!" << endl;
 
-/*
+        ifstream file;
+        file.open(filename);
+        if (!file.is_open()) {
+            cout << "File not found" << endl;
+        } else {
+            ofstream temp;
+            temp.open("temp.txt");
+            
+            vector<Player> v = {};
+            Player p;
+            string line;
+            size_t pos;
+
+            p.name = readName();
+            p.time = time;
+            v.push_back(p);
+
+            getline(file, line);    // ignore the first 2 lines of the file
+            temp << line << endl;   // Lines: (Player - Time) and (---------)     we can put it in a cycle, but there's only 2...
+            getline(file, line);    
+            temp << line << endl;   
+            while (getline(file, line)) {
+                pos = line.find('-') + 1;
+                // cout << "Time: " << strip(line.substr(pos)) << endl;
+                p.time = stoi(strip(line.substr(pos)));
+                p.name = fill15(strip(line.substr(0, 15)));
+                v.push_back(p);
+            }
+            bubbleSort(v);
+            
+            for(int i = 0; i < v.size(); i++) {
+                temp << v[i].name << "  - " << v[i].time << endl;
+            }
+            temp.close();
+            file.close();
+            const char* filename_c = filename.c_str();
+            remove(filename_c);
+            rename("temp.txt", filename_c);
+        }
+    } else {
+        cout << "Game Over!" << endl;
+        cout << "You Lost" << endl;
+    }
+}
+
 void rules() {
     // prints rules
+    cout << "\nWe are going to need to write some rules in here " << endl;
+    
+    cout << "Controls: " << endl; 
+    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
+    cout << "| Q | W | E |" << "\t\t" << "|  UP & LEFT  |  UP  |  UP & RIGHT  |" << endl;
+    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
+    cout << "| A | S | D |" << "\t\t" << "|     LEFT    | STAY |     Right    |" << endl;
+    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
+    cout << "| Z | X | C |" << "\t\t" << "| DOWN & LEFT | DOWN | DOWN & RIGHT |" << endl;
+    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
+
+    cout << "Press any key to go back to the menu" << "\n\n";
+    _getch();
 }
 
+/*
 void clean() {
     // cleans terminal
 
 } 
 */
 
-string strip(string &str) {
-    // removes the leading and trailing whitespaces of a string
-    size_t start = str.find_last_not_of(' ');
-    size_t end = str.find_last_not_of(' ');
-    return str.substr(start, end-start+1);
-}
