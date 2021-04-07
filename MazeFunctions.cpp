@@ -106,7 +106,7 @@ void showMaze(const vector<vector<char>> &v) {
     // prints out the maze
     for (int i = 0; i < v.size(); i++) {
         for (int j = 0; j < v[i].size(); j++) {
-           cout << v[i][j]; 
+           cout << v[i][j] << ' '; 
         }      
         cout << endl;
     }
@@ -254,17 +254,21 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
 int checkGameOver(const vector<vector<char>> &maze) {
     // check whether there is an 'h' or if there are no 'R' -> GAME OVER
     // 0 - continue, 1 - robots win, 2 - hero/human wins
+    int count = 0;
     for (int i = 0; i < maze.size(); i++) {
         for (int j = 0; j < maze[i].size(); j++) {
             if (maze[i][j] == 'h') {
                 return 1;
             }
             if (maze[i][j] == 'R') {
-                return 0;
+                count++;
             }
         }
     }
-    return 2;
+    if (count == 0) {
+        return 2;
+    }
+    return 0;
 
 }
 

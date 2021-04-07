@@ -29,7 +29,7 @@ int main() {
         updateRobotsXY(coordinates_R, coordinates_H);
         updateMaze(maze, coordinates_R, coordinates_H);
     }
-    
+    showMaze(maze);
     gameOver(checkGameOver(maze), 700, "MAZE_01_WINNERS.txt");
     _getch();
     /*
