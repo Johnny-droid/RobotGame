@@ -18,6 +18,7 @@ vector<vector<char>> readFile(string filename) {
     string line;
     vector<char> row;
     char ch;
+    getline(file, line); //ignore first line;
     while (getline(file, line)) {
         row = {};
         for (int i = 0; i < line.size(); i++) {
@@ -207,9 +208,9 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
         }
     }
 
-    //check for robot collisions with fences
+    //check for robot collisions with fences and dead robots
     for (int i = 0; i < v.size(); i++) {
-        if (maze[v[i][0]][v[i][1]] == '*') {
+        if (maze[v[i][0]][v[i][1]] == '*' || maze[v[i][0]][v[i][1]] == 'r') {
             maze[v[i][0]][v[i][1]] = 'r';
             v.erase(v.begin() + i);
             i--;
@@ -217,29 +218,34 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
     }
 
     //check for robots collisions (robots with equal coordinates) and deletes them
-    for (int i = 0; i < v.size()-1; i++) {
-        bool equal_found = false;
-        for (int j = i+1; j < v.size(); j++) {
-            if (v[i] == v[j]) {
-                v.erase( v.begin() + j);
-                j--;
-                equal_found = true;
+    if (v.size() >= 2) {
+        for (int i = 0; i < v.size()-1; i++) {
+            bool equal_found = false;
+            for (int j = i+1; j < v.size(); j++) {
+                if (v[i] == v[j]) {
+                    v.erase( v.begin() + j);
+                    j--;
+                    equal_found = true;
+                }
+            }
+            if (equal_found) {
+                maze[v[i][0]][v[i][1]] = 'r';
+                v.erase(v.begin() + i);
+                i--;
             }
         }
-        if (equal_found) {
-            maze[v[i][0]][v[i][1]] = 'r';
-            v.erase(v.begin() + i);
-            i--;
-        }
+    };
+    // redraw human 
+    if (maze[h[0]][h[1]] == 'r') {
+        maze[h[0]][h[1]] = 'h';
+    } else {
+        maze[h[0]][h[1]] = 'H';
     }
 
     // redraw robots (think of joining with the loop below)
     for (int i = 0; i < v.size(); i++) {
         maze[v[i][0]][v[i][1]] = 'R';
     }
-
-    // redraw human 
-    maze[h[0]][h[1]] = 'H';
 
     //check if the human is alive
     for (int i = 0; i < v.size(); i++) {
@@ -248,6 +254,8 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
             break;
         }
     }
+
+    
 
 }
 
@@ -370,6 +378,7 @@ void gameOver(int x, int time, string filename) {
             const char* filename_c = filename.c_str();
             remove(filename_c);
             rename("temp.txt", filename_c);
+            cout << "I hope you have enjoyed our game!";
         }
     } else {
         cout << "Game Over!" << endl;

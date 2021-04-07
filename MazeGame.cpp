@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "MazeFunctions.cpp"
 using namespace std;
 
@@ -19,7 +20,7 @@ int main() {
         }
         menu_ctrl = menu();
     }
-
+    auto begin = chrono::steady_clock::now();
     maze = readFile("MAZE_01.txt");
     coordinates_R = getRobotsXY(maze);
     coordinates_H = getHumanXY(maze);
@@ -29,16 +30,10 @@ int main() {
         updateRobotsXY(coordinates_R, coordinates_H);
         updateMaze(maze, coordinates_R, coordinates_H);
     }
+    auto end = chrono::steady_clock::now();
+    auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
     showMaze(maze);
-    gameOver(checkGameOver(maze), 700, "MAZE_01_WINNERS.txt");
+    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_01_WINNERS.txt");
     _getch();
-    /*
-    showCoordinates_R(coordinates_R);
-    updateRobotsXY(coordinates_R, {6, 12});
-    updateMaze(maze, coordinates_R, {6, 12});
-    showMaze(maze);
-    showCoordinates_R(coordinates_R);
-    gameOver(2, 700, "MAZE_01_WINNERS.txt");
-    */
 
 }
