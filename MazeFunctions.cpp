@@ -388,18 +388,32 @@ void gameOver(int x, int time, string filename) {
 
 void rules() {
     // prints rules
-    cout << "\nWe are going to need to write some rules in here " << endl;
-    
-    cout << "Controls: " << endl; 
-    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
-    cout << "| Q | W | E |" << "\t\t" << "|  UP & LEFT  |  UP  |  UP & RIGHT  |" << endl;
-    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
-    cout << "| A | S | D |" << "\t\t" << "|     LEFT    | STAY |     Right    |" << endl;
-    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
-    cout << "| Z | X | C |" << "\t\t" << "| DOWN & LEFT | DOWN | DOWN & RIGHT |" << endl;
-    cout << "-------------" << "\t\t" << "-------------------------------------" << endl;
+    cout << "\n Here are the game's rules!" << endl;
 
-    cout << "Press any key to go back to the menu" << "\n\n";
+    cout << "\n Controls: " << endl;
+    cout << " -----------                          ----------------------------------- " << endl;
+    cout << "| Q | W | E |               :.       |  UP & LEFT  |  UP  |  UP & RIGHT  |" << endl;
+    cout << "-------------   :::::::::::::::.     -------------------------------------" << endl;
+    cout << "| A | S | D |   :::::::::::::::::.   |     LEFT    | STAY |     Right    |" << endl;
+    cout << "-------------   ::::::::::::::::'    -------------------------------------" << endl;
+    cout << "| Z | X | C |               ::'      | DOWN & LEFT | DOWN | DOWN & RIGHT |" << endl;
+    cout << " -----------                '         ----------------------------------- " << endl;
+
+
+    cout << "\n Your Objective:" << endl;
+    cout << " -------------------------------------------------------------------------------------" << endl;
+    cout << "| -> You have to destroy all the robots and survive their attack.                     |" << endl;
+    cout << "|                                                                                     |" << endl;
+    cout << "| -> To destroy them, you can navigate through the maze and try to bait the robots    |" << endl;
+    cout << "| into hitting a fence, a pole or another fellow robot. This way they will be unable  |" << endl;
+    cout << "| to pursue you.                                                                      |" << endl;
+    cout << "|                                                                                     |" << endl;
+    cout << "| -> However, you must be careful. Don't let the robots corner you. If they touch     |" << endl;
+    cout << "| you, they will capture you and it's game over. Also, you're not allowed to run into |" << endl;
+    cout << "| a fence or post, otherwise you'd be brutally eletrocuted. Strategize your movements.|" << endl;
+    cout << " -------------------------------------------------------------------------------------" << endl;
+
+    cout << "\n Press any key to continue." << endl;
     _getch();
 }
 
