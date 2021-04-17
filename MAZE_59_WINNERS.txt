@@ -1,6 +1,6 @@
 Player          – Time
 ----------------------
-Asdrubal         – 050
-João             – 075
-António          – 100
-Pro Gamer        - 500
+Asdrubal         – 192
+João             – 196
+António          – 237
+Pro Gamer        - 460
