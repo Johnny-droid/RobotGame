@@ -33,7 +33,17 @@ int main() {
     auto end = chrono::steady_clock::now();
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
     showMaze(maze);
-    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_01_WINNERS.txt");
+    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_01_WINNERS.txt"); 30 x 10
     _getch();
 
 }
+
+/*
+1. Fix leaderboards e maze 1
+2. Show leaderboards
+3. Ctrl-z switch
+4. Ask and Read maze number
+5. Center and clean text in console
+6. Rules explain levels
+7. Deal case file not found
+*/

@@ -17,14 +17,11 @@ vector<vector<char>> readFile(string filename) {
     vector<vector<char>> maze = {};
     string line;
     vector<char> row;
-    char ch;
     getline(file, line); //ignore first line;
     while (getline(file, line)) {
         row = {};
         for (int i = 0; i < line.size(); i++) {
-            ch = line[i];
-            row.push_back(ch);
-            
+            row.push_back(line[i]);
         }
         maze.push_back(row);
     }
@@ -363,7 +360,6 @@ void gameOver(int x, int time, string filename) {
             temp << line << endl;   
             while (getline(file, line)) {
                 pos = line.find('-') + 1;
-                // cout << "Time: " << strip(line.substr(pos)) << endl;
                 p.time = stoi(strip(line.substr(pos)));
                 p.name = fill15(strip(line.substr(0, 15)));
                 v.push_back(p);
