@@ -31,13 +31,25 @@ vector<vector<char>> readFile(string filename) {
 
 string readMazeNumber() {
     // Read the number of maze
-    // (Explain levels)
     int n;
     string str;
     bool success = false;
+    cout << "\n ---------------------------------------------------------                                   " << endl;
+    cout << "| There are 6 distinct maze layouts, each of these with   |     There are more       _\\/_      " << endl;
+    cout << "| 10 versions featuring different starting positions for  |     robots like me      [____]     " << endl;
+    cout << "| the robots and yourself.                                |     on the last stages. |()()|     " << endl;
+    cout << "|                                                         |     Choose wisely.    ___\\__/___   " << endl;
+    cout << "| Stage 1: The Arena         (from Maze 01 to 09)         |     Beep.      __    |__|    |__|  " << endl;
+    cout << "| Stage 2: The Other Arena   (from Maze 10 to 19)         |               /__\\___/ /| [] | |   " << endl;
+    cout << "| Stage 3: Smiley            (from Maze 20 to 29)         |                __)____/ |    | |   " << endl;
+    cout << "| Stage 4: Heart             (from Maze 30 to 39)         |               \\__/      |____|_|   " << endl;
+    cout << "| Stage 5: Equivalent        (from Maze 40 to 49)         |                         | || |_/   " << endl;
+    cout << "| Stage 6: Fury              (from Maze 50 to 59)         |                         |_||_|     " << endl;
+    cout << " ---------------------------------------------------------                         _| || |_    " << endl;
+    cout << "                                                                                  |___||___|   " << endl;
     while (!success) {
         success = true;
-        cout << "Enter Maze Number: ";
+        cout << "\nPlease enter a maze number: ";
         cin >> n;
         if ( n < 1 || n > 99 || cin.fail()) {
             cout << "Invalid maze number!\n";

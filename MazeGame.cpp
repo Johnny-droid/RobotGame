@@ -42,7 +42,7 @@ int main() {
 }
 
 /*
-1. Fix leaderboards e maze 1
+1. Fix maze 1
 2. Ctrl-z switch
 3. Center and clean text in console
 4. Rules explain levels
