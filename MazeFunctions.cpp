@@ -29,6 +29,30 @@ vector<vector<char>> readFile(string filename) {
     return maze;
 }
 
+string readMazeNumber() {
+    // Read the number of maze
+    // (Explain levels)
+    int n;
+    string str;
+    bool success = false;
+    while (!success) {
+        success = true;
+        cout << "Enter Maze Number: ";
+        cin >> n;
+        if ( n < 1 || n > 99 || cin.fail()) {
+            cout << "Invalid maze number!\n";
+            success = false;
+        }
+    }
+
+    if (n < 10) {
+        str = "0" + to_string(n);
+        return str;
+    }
+    return to_string(n);
+
+}
+
 void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
     cout << "-------------" << endl;
     cout << "| Q | W | E |" << endl;
@@ -88,10 +112,10 @@ void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
                 break;
         };
 
-        if (maze[y][x] == '*') {
+        if (maze[y][x] == 'r') {
             cout << "You can't move to a fence! Do you want to die?! " << endl;
         }
-    } while (maze[y][x] == '*');
+    } while (maze[y][x] == 'r');
     
     h[0] = y;
     h[1] = x;
@@ -366,15 +390,17 @@ void gameOver(int x, int time, string filename) {
             }
             bubbleSort(v);
             
+            cout << "\nNew times: " << endl;
             for(int i = 0; i < v.size(); i++) {
                 temp << v[i].name << "  - " << v[i].time << endl;
+                cout << v[i].name << "  - " << v[i].time << endl;
             }
             temp.close();
             file.close();
             const char* filename_c = filename.c_str();
             remove(filename_c);
             rename("temp.txt", filename_c);
-            cout << "I hope you have enjoyed our game!";
+            cout << "\nI hope you have enjoyed our game!";
         }
     } else {
         cout << "Game Over!" << endl;

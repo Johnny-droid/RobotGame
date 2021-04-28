@@ -5,7 +5,7 @@ Group Members:
     - António Maria Gameiro Campos Sampaio de Matos
 
 Program Development State:
-    - starting
+    - Almost finished
 
 Main Difficulties:
     - none (so far)

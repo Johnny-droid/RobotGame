@@ -10,6 +10,7 @@ int main() {
     vector<vector<int>> coordinates_R;
     vector<int> coordinates_H;
     int menu_ctrl, end_ctrl;
+    string maze_number;
 
     menu_ctrl = menu(); // returns 0 Exit, 1 Rules, 2 Play
     while (menu_ctrl != 2) {
@@ -20,8 +21,10 @@ int main() {
         }
         menu_ctrl = menu();
     }
+
+    maze_number = readMazeNumber();
     auto begin = chrono::steady_clock::now();
-    maze = readFile("MAZE_01.txt");
+    maze = readFile("MAZE_" + maze_number + ".TXT");
     coordinates_R = getRobotsXY(maze);
     coordinates_H = getHumanXY(maze);
     while (checkGameOver(maze) == 0) {
@@ -33,17 +36,15 @@ int main() {
     auto end = chrono::steady_clock::now();
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
     showMaze(maze);
-    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_01_WINNERS.txt"); 30 x 10
+    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_" + maze_number + "_WINNERS.txt"); // 30 x 10
     _getch();
 
 }
 
 /*
 1. Fix leaderboards e maze 1
-2. Show leaderboards
-3. Ctrl-z switch
-4. Ask and Read maze number
-5. Center and clean text in console
-6. Rules explain levels
-7. Deal case file not found
+2. Ctrl-z switch
+3. Center and clean text in console
+4. Rules explain levels
+5. Deal case file not found
 */
