@@ -269,7 +269,7 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
         }
     };
     // redraw human 
-    if (maze[h[0]][h[1]] == '*') {
+    if (maze[h[0]][h[1]] == '*' || maze[h[0]][h[1]]== 'r') {
         maze[h[0]][h[1]] = 'h';
     } else {
         maze[h[0]][h[1]] = 'H';

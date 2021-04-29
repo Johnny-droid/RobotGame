@@ -36,7 +36,7 @@ int main() {
     auto end = chrono::steady_clock::now();
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
     showMaze(maze);
-    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_" + maze_number + "_WINNERS.txt"); // 30 x 10
+    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_" + maze_number + "_WINNERS.TXT"); // 30 x 10
     _getch();
 
 }
