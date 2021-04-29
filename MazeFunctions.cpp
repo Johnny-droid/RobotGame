@@ -463,7 +463,7 @@ void rules() {
     cout << "|                                                                                     |" << endl;
     cout << "| -> However, you must be careful. Don't let the robots corner you. If they touch     |" << endl;
     cout << "| you, they will capture you and it's game over. Also, you're not allowed to run into |" << endl;
-    cout << "| a fence or post, otherwise you'd be brutally eletrocuted. Strategize your movements.|" << endl;
+    cout << "| a destroyed robot, otherwise you'd die. Strategize your movements.                  |" << endl;
     cout << " -------------------------------------------------------------------------------------" << endl;
 
     cout << "\n Press any key to continue." << endl;
