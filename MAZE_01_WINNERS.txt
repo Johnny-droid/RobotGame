@@ -1,8 +1,8 @@
 Player          - Time
 ----------------------
-Johnny           - 7
-Anto             - 13
-Asdrubal         - 50
+Johnny           - 14
+Anto             - 29
+Asdrubal         - 51
 Joao             - 75
 Antonio          - 100
 Pro Gamer        - 500

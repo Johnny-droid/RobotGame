@@ -39,25 +39,32 @@ string readMazeNumber() {
     cout << "| 10 versions featuring different starting positions for  |     robots like me      [____]     " << endl;
     cout << "| the robots and yourself.                                |     on the last stages. |()()|     " << endl;
     cout << "|                                                         |     Choose wisely.    ___\\__/___   " << endl;
-    cout << "| Stage 1: The Arena         (from Maze 01 to 09)         |     Beep.      __    |__|    |__|  " << endl;
-    cout << "| Stage 2: The Other Arena   (from Maze 10 to 19)         |               /__\\___/ /| [] | |   " << endl;
-    cout << "| Stage 3: Smiley            (from Maze 20 to 29)         |                __)____/ |    | |   " << endl;
-    cout << "| Stage 4: Heart             (from Maze 30 to 39)         |               \\__/      |____|_|   " << endl;
-    cout << "| Stage 5: Equivalent        (from Maze 40 to 49)         |                         | || |_/   " << endl;
-    cout << "| Stage 6: Fury              (from Maze 50 to 59)         |                         |_||_|     " << endl;
+    cout << "| Stage 1: The Arena         (from Maze 01 to 10)         |     Beep.      __    |__|    |__|  " << endl;
+    cout << "| Stage 2: The Other Arena   (from Maze 11 to 20)         |               /__\\___/ /| [] | |   " << endl;
+    cout << "| Stage 3: Smiley            (from Maze 21 to 30)         |                __)____/ |    | |   " << endl;
+    cout << "| Stage 4: Heart             (from Maze 31 to 40)         |               \\__/      |____|_|   " << endl;
+    cout << "| Stage 5: Equivalent        (from Maze 41 to 50)         |                         | || |_/   " << endl;
+    cout << "| Stage 6: Fury              (from Maze 51 to 60)         |                         |_||_|     " << endl;
     cout << " ---------------------------------------------------------                         _| || |_    " << endl;
     cout << "                                                                                  |___||___|   " << endl;
     while (!success) {
         success = true;
         cout << "\nPlease enter a maze number: ";
         cin >> n;
-        if ( n < 1 || n > 99 || cin.fail()) {
-            cout << "Invalid maze number!\n";
+        if ( n < 0 || n > 99 || cin.fail()) {
+            cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
+            success = false;
+        }
+        else if (n > 60 && n < 100) {
+            cout << "Actually, this game has only 60 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
             success = false;
         }
     }
-
-    if (n < 10) {
+    if (n == 0) {
+        menu_ctrl = menu();
+        menu_loop();
+    }
+    if (n < 10 && n > 0) {
         str = "0" + to_string(n);
         return str;
     }
@@ -170,6 +177,18 @@ int menu() {
         }
     } while (x != 0 && x != 1 && x != 2);
     return x;
+}
+
+void menu_loop() {             //se der problema cola isto no sítio
+    while (menu_ctrl != 2) {
+        if (menu_ctrl == 0) {
+            return 0;
+        }
+        else if (menu_ctrl == 1) {
+            rules();
+        }
+        menu_ctrl = menu();
+    }
 }
 
 

@@ -13,15 +13,8 @@ int main() {
     string maze_number;
 
     menu_ctrl = menu(); // returns 0 Exit, 1 Rules, 2 Play
-    while (menu_ctrl != 2) {
-        if (menu_ctrl == 0) {
-            return 0;
-        } else if (menu_ctrl == 1) {
-            rules();
-        }
-        menu_ctrl = menu();
-    }
-
+    menu_loop();  //se houver problemas, vem aqui e cola a função
+    
     maze_number = readMazeNumber();
     auto begin = chrono::steady_clock::now();
     maze = readFile("MAZE_" + maze_number + ".TXT");
@@ -42,8 +35,7 @@ int main() {
 }
 
 /*
-1. Fix maze 1
-2. Ctrl-z switch
-3. Center and clean text in console
-4. Deal case file not found
+1. Ctrl-z switch
+2. Center and clean text in console
+3. Deal case file not found
 */
