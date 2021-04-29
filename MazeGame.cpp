@@ -45,6 +45,5 @@ int main() {
 1. Fix maze 1
 2. Ctrl-z switch
 3. Center and clean text in console
-4. Rules explain levels
-5. Deal case file not found
+4. Deal case file not found
 */

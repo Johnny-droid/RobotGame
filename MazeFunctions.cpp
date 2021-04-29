@@ -125,7 +125,7 @@ void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
         };
 
         if (maze[y][x] == 'r') {
-            cout << "You can't move to a fence! Do you want to die?! " << endl;
+            cout << "You can't move to a destroyed robot! Do you want to die?! " << endl;
         }
     } while (maze[y][x] == 'r');
     
@@ -269,7 +269,7 @@ void updateMaze(vector<vector<char>> &maze, vector<vector<int>> &v, const vector
         }
     };
     // redraw human 
-    if (maze[h[0]][h[1]] == 'r') {
+    if (maze[h[0]][h[1]] == '*') {
         maze[h[0]][h[1]] = 'h';
     } else {
         maze[h[0]][h[1]] = 'H';
