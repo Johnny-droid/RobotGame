@@ -6,18 +6,41 @@
 using namespace std;
 
 int main() {
-    vector<vector<char>> maze;
+    vector<vector<char>> maze, error = {{'e'}};
     vector<vector<int>> coordinates_R;
     vector<int> coordinates_H;
     int menu_ctrl, end_ctrl;
     string maze_number;
 
-    menu_ctrl = menu(); // returns 0 Exit, 1 Rules, 2 Play
-    menu_loop();  //se houver problemas, vem aqui e cola a função
+    do {
+        menu_ctrl = menu(); // returns 0 Exit, 1 Rules, 2 Play
+        if (menu_ctrl == 0) {
+            return 0;
+        }
+        else if (menu_ctrl == 1) {
+            rules();
+        }
+        if (menu_ctrl == 2) {
+            
+            maze_number = readMazeNumber();
+            if (maze_number == "0") {
+                menu_ctrl = 3;
+            } else {
+                maze = readFile("MAZE_" + maze_number + ".TXT");
+                while (maze == error) {
+                    maze_number = readMazeNumber(false);
+                    if (maze_number == "0") {
+                        menu_ctrl = 3;
+                        break;
+                    }
+                    maze = readFile("MAZE_" + maze_number + ".TXT");
+                } 
+            } 
+        }
+    } while (menu_ctrl != 2);
     
-    maze_number = readMazeNumber();
+
     auto begin = chrono::steady_clock::now();
-    maze = readFile("MAZE_" + maze_number + ".TXT");
     coordinates_R = getRobotsXY(maze);
     coordinates_H = getHumanXY(maze);
     while (checkGameOver(maze) == 0) {
