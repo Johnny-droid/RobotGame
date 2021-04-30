@@ -12,6 +12,8 @@ int main() {
     int menu_ctrl, end_ctrl;
     string maze_number;
 
+    showTitle();
+
     do {
         menu_ctrl = menu(); // returns 0 Exit, 1 Rules, 2 Play
         if (menu_ctrl == 0) {
@@ -58,7 +60,5 @@ int main() {
 }
 
 /*
-1. Ctrl-z switch
-2. Center and clean text in console
-3. Deal case file not found
+1. Deal case file not found
 */

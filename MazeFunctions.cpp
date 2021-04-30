@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <conio.h>
+#include <iomanip>
+#include <cstdlib>
 using namespace std;
 
 vector<vector<char>> readFile(string filename) {
@@ -29,31 +31,45 @@ vector<vector<char>> readFile(string filename) {
     return maze;
 }
 
+void showTitle() {
+    cout << "\n\n";
+    cout << "\t\t\t _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
+    cout << "\t\t\t|  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
+    cout << "\t\t\t| |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
+    cout << "\t\t\t|  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
+    cout << "\t\t\t| | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
+    cout << "\t\t\t|_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ " << endl;
+    cout << endl;
+}
+
 string readMazeNumber(bool showText = true) {
     // Read the number of maze
     int n;
     string str;
     bool success = false;
     if (showText) {
-        cout << "\n ---------------------------------------------------------                                   " << endl;
-        cout << "| There are 6 distinct maze layouts, each of these with   |     There are more       _\\/_      " << endl;
-        cout << "| 10 versions featuring different starting positions for  |     robots like me      [____]     " << endl;
-        cout << "| the robots and yourself.                                |     on the last stages. |()()|     " << endl;
-        cout << "|                                                         |     Choose wisely.    ___\\__/___   " << endl;
-        cout << "| Stage 1: The Arena         (from Maze 01 to 10)         |     Beep.      __    |__|    |__|  " << endl;
-        cout << "| Stage 2: The Other Arena   (from Maze 11 to 20)         |               /__\\___/ /| [] | |   " << endl;
-        cout << "| Stage 3: Smiley            (from Maze 21 to 30)         |                __)____/ |    | |   " << endl;
-        cout << "| Stage 4: Heart             (from Maze 31 to 40)         |               \\__/      |____|_|   " << endl;
-        cout << "| Stage 5: Equivalent        (from Maze 41 to 50)         |                         | || |_/   " << endl;
-        cout << "| Stage 6: Fury              (from Maze 51 to 60)         |                         |_||_|     " << endl;
-        cout << " ---------------------------------------------------------                         _| || |_    " << endl;
-        cout << "                                                                                  |___||___|   " << endl;
+        cout << "\n           ---------------------------------------------------------                                   " << endl;
+        cout << "          | There are 6 distinct maze layouts, each of these with   |     There are more       _\\/_      " << endl;
+        cout << "          | 10 versions featuring different starting positions for  |     robots like me      [____]     " << endl;
+        cout << "          | the robots and yourself.                                |     on the last stages. |()()|     " << endl;
+        cout << "          |                                                         |     Choose wisely.    ___\\__/___   " << endl;
+        cout << "          | Stage 1: The Arena         (from Maze 01 to 10)         |     Beep.      __    |__|    |__|  " << endl;
+        cout << "          | Stage 2: The Other Arena   (from Maze 11 to 20)         |               /__\\___/ /| [] | |   " << endl;
+        cout << "          | Stage 3: Smiley            (from Maze 21 to 30)         |                __)____/ |    | |   " << endl;
+        cout << "          | Stage 4: Heart             (from Maze 31 to 40)         |               \\__/      |____|_|   " << endl;
+        cout << "          | Stage 5: Equivalent        (from Maze 41 to 50)         |                         | || |_/   " << endl;
+        cout << "          | Stage 6: Fury              (from Maze 51 to 60)         |                         |_||_|     " << endl;
+        cout << "           ---------------------------------------------------------                         _| || |_    " << endl;
+        cout << "                                                                                            |___||___|   " << endl;
     }
     while (!success) {
         success = true;
-        cout << "\nPlease enter a maze number: ";
+        cout << setw(45) <<"\nPlease enter a maze number: ";
         cin >> n;
         if ( n < 0 || n > 99 || cin.fail()) {
+            if (cin.eof()) {
+                exit(0);
+            }
             cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
             success = false;
         }
@@ -72,13 +88,13 @@ string readMazeNumber(bool showText = true) {
 }
 
 void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
-    cout << "-------------" << endl;
-    cout << "| Q | W | E |" << endl;
-    cout << "-------------" << endl;
-    cout << "| A | S | D |" << endl;
-    cout << "-------------" << endl;
-    cout << "| Z | X | C |" << endl;
-    cout << "-------------" << endl;
+    cout << setw(60) << "-------------" << endl;
+    cout << setw(60) << "| Q | W | E |" << endl;
+    cout << setw(60) << "-------------" << endl;
+    cout << setw(60) << "| A | S | D |" << endl;
+    cout << setw(60) << "-------------" << endl;
+    cout << setw(60) << "| Z | X | C |" << endl;
+    cout << setw(60) << "-------------" << endl;
 
     char ch;
     int y, x;
@@ -86,8 +102,12 @@ void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
         do {
             cout << "Enter key: ";
             cin >> ch;
+            cin.ignore(10000, '\n');
             ch = toupper(ch);
             if ((ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' ) || cin.fail()) {
+                if (cin.eof()) {
+                    exit(0);
+                }
                 cin.clear();
                 cin.ignore(100000, '\n');
                 cout << "Invalid input!\n";
@@ -144,7 +164,9 @@ void readHumanPlay(const vector<vector<char>> &maze, vector<int> &h) {
 
 void showMaze(const vector<vector<char>> &v) { 
     // prints out the maze
+    cout << '\n';
     for (int i = 0; i < v.size(); i++) {
+        cout << setw(35); 
         for (int j = 0; j < v[i].size(); j++) {
            cout << v[i][j] << ' '; 
         }      
@@ -165,11 +187,15 @@ void showCoordinates_R(const vector<vector<int>> &v) {
 int menu() {
     // returns 0 Exit, 1 Rules, 2 Play
     int x;
-    cout << "1) Rules \n2) Play \n0) Exit\n";
+    cout << "\n\n";
+    cout << setw(45) <<"1) Rules "<< setw(15) << "2) Play " << setw(15) << "0) Exit\n\n";
     do {
         cout << "Enter option: ";
         cin >> x;
         if ((x != 0 && x != 1 && x != 2) || cin.fail()) {
+            if (cin.eof()) {
+                exit(0);
+            }
             cin.clear();
             cin.ignore(100000, '\n');
             cout << "Invalid input!\n";
@@ -181,30 +207,30 @@ int menu() {
 
 void rules() {
     // prints rules
-    cout << "\n Here are the game's rules!" << endl;
+    cout << "\n           Here are the game's rules!" << endl;
 
-    cout << "\n Controls: " << endl;
-    cout << " -----------                          ----------------------------------- " << endl;
-    cout << "| Q | W | E |               :.       |  UP & LEFT  |  UP  |  UP & RIGHT  |" << endl;
-    cout << "-------------   :::::::::::::::.     -------------------------------------" << endl;
-    cout << "| A | S | D |   :::::::::::::::::.   |     LEFT    | STAY |     Right    |" << endl;
-    cout << "-------------   ::::::::::::::::'    -------------------------------------" << endl;
-    cout << "| Z | X | C |               ::'      | DOWN & LEFT | DOWN | DOWN & RIGHT |" << endl;
-    cout << " -----------                '         ----------------------------------- " << endl;
+    cout << "\n           Controls: " << endl;
+    cout << "             \t-----------                          ----------------------------------- " << endl;
+    cout << "            \t| Q | W | E |               :.       |  UP & LEFT  |  UP  |  UP & RIGHT  |" << endl;
+    cout << "            \t-------------   :::::::::::::::.     -------------------------------------" << endl;
+    cout << "            \t| A | S | D |   :::::::::::::::::.   |     LEFT    | STAY |     Right    |" << endl;
+    cout << "            \t-------------   ::::::::::::::::'    -------------------------------------" << endl;
+    cout << "            \t| Z | X | C |               ::'      | DOWN & LEFT | DOWN | DOWN & RIGHT |" << endl;
+    cout << "             \t-----------                '         ----------------------------------- " << endl;
 
 
-    cout << "\n Your Objective:" << endl;
-    cout << " -------------------------------------------------------------------------------------" << endl;
-    cout << "| -> You have to destroy all the robots and survive their attack.                     |" << endl;
-    cout << "|                                                                                     |" << endl;
-    cout << "| -> To destroy them, you can navigate through the maze and try to bait the robots    |" << endl;
-    cout << "| into hitting a fence, a pole or another fellow robot. This way they will be unable  |" << endl;
-    cout << "| to pursue you.                                                                      |" << endl;
-    cout << "|                                                                                     |" << endl;
-    cout << "| -> However, you must be careful. Don't let the robots corner you. If they touch     |" << endl;
-    cout << "| you, they will capture you and it's game over. Also, you're not allowed to run into |" << endl;
-    cout << "| a destroyed robot, otherwise you'd die. Strategize your movements.                  |" << endl;
-    cout << " -------------------------------------------------------------------------------------" << endl;
+    cout << "\n          Your Objective:" << endl;
+    cout << "           -------------------------------------------------------------------------------------" << endl;
+    cout << "          | -> You have to destroy all the robots and survive their attack.                     |" << endl;
+    cout << "          |                                                                                     |" << endl;
+    cout << "          | -> To destroy them, you can navigate through the maze and try to bait the robots    |" << endl;
+    cout << "          | into hitting a fence, a pole or another fellow robot. This way they will be unable  |" << endl;
+    cout << "          | to pursue you.                                                                      |" << endl;
+    cout << "          |                                                                                     |" << endl;
+    cout << "          | -> However, you must be careful. Don't let the robots corner you. If they touch     |" << endl;
+    cout << "          | you, they will capture you and it's game over. Also, you're not allowed to run into |" << endl;
+    cout << "          | a destroyed robot, otherwise you'd die. Strategize your movements.                  |" << endl;
+    cout << "           -------------------------------------------------------------------------------------" << endl;
 
     cout << "\n Press any key to continue." << endl;
     _getch();
@@ -377,6 +403,9 @@ string readName() {
         cout << "Enter your name: ";
         cin >> name;
         if ( name.length() > 15 || cin.fail()) {
+            if (cin.eof()) {
+                exit(0);
+            }
             cin.clear();
             cin.ignore(100000, '\n');
             cout << "Invalid input!\n";
@@ -415,9 +444,6 @@ void gameOver(int x, int time, string filename) {
         if (!file.is_open()) {
             cout << "File not found" << endl;
         } else {
-            ofstream temp;
-            temp.open("temp.txt");
-            
             vector<Player> v = {};
             Player p;
             string line;
@@ -426,6 +452,9 @@ void gameOver(int x, int time, string filename) {
             p.name = readName();
             p.time = time;
             v.push_back(p);
+
+            ofstream temp;
+            temp.open("temp.txt");
 
             getline(file, line);    // ignore the first 2 lines of the file
             temp << line << endl;   // Lines: (Player - Time) and (---------)     we can put it in a cycle, but there's only 2...
@@ -456,12 +485,3 @@ void gameOver(int x, int time, string filename) {
         cout << "You Lost" << endl;
     }
 }
-
-
-/*
-void clean() {
-    // cleans terminal
-
-} 
-*/
-

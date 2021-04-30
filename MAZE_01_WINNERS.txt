@@ -1,5 +1,6 @@
 Player          - Time
 ----------------------
+John             - 12
 Johnny           - 14
 Anto             - 29
 Asdrubal         - 51
