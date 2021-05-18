@@ -2,11 +2,14 @@
 #include <vector>
 #include <string>
 #include <chrono>
-#include "MazeFunctions.cpp"
+#include "MazeClasses.hpp"
 using namespace std;
 
 int main() {
-
+    int a = 1, b = 3;
+    char c = 'H';
+    Player p1(a, b, c);
+    p1.show();
     
 }
 
