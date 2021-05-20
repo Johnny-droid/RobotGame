@@ -19,6 +19,7 @@ struct Position {
 class Player {
     public:
         Player(int row, int col, char symbol);
+        Player();
         int getRow() const;
         int getCol() const;
         char getSymbol() const;
@@ -28,7 +29,6 @@ class Player {
         void show() const;
     private:
         int _row, _col;
-        bool _alive;
         char _symbol;
 };
 
@@ -75,7 +75,8 @@ class Post {
 
 class Maze {
     public:
-        Maze(int numRows, int numCols);
+        Maze(int numRows, int numCols, vector<Position> gates, vector<Post> posts);
+        Maze();
         void addPost(const Post& post);
         int getnumRows() const;
         int getnumCols() const;
@@ -83,8 +84,8 @@ class Maze {
         // other methods
     private:
         int _numRows, _numCols;
-        int coord_x_gate, coord_y_gate;
-        vector<Post> posts;
+        vector<Position> _gates;
+        vector<Post> _posts;
         // data structure that represents the posts
 };
 
