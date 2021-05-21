@@ -10,23 +10,21 @@ using namespace std;
 // Player
 
 Player::Player(int row, int col, char symbol) {
-	_row = row;
-	_col = col;
+	_position = {row, col};
 	_symbol = symbol;
 }
 
 Player::Player() {
-	_row = 0;
-	_col = 0;
+	_position = {0, 0};
 	_symbol = 'h';
 }
 
 int Player::getCol() const {
-	return _col;
+	return _position.col;
 }
 
 int Player::getRow() const {
-	return _row;
+	return _position.row;
 }
 
 char Player::getSymbol() const {
@@ -53,9 +51,9 @@ void Player::setAsDead() {
 
 // Robot
 
-Robot::Robot(int row, int col) {
-	_row = row;
-	_col = col;
+Robot::Robot(int row, int col, int id) {
+	_position = {row, col};
+	_id = id;
 }
 
 int Robot::getID() const {
@@ -70,30 +68,32 @@ char Robot::getSymbol() const {
 }
 
 int Robot::getRow() const {
-	return _row;
+	return _position.row;
 }
 
 int Robot::getCol() const {
-	return _col;
+	return _position.col;
 }
 
 bool Robot::isAlive() const {
 	return _alive;
 }
 
-
+void Robot::setPosition(const Position &pos) {
+	_position = pos;
+}
 
 /*
 Position Robot::getPosition() const {}
-void Robot::setPosition(const Position &pos) {}
+
 */
 
 void Robot::setRow(int x) {
-	_row = x;
+	_position.row = x;
 }
 
 void Robot::setCol(int y) {
-	_col = y;
+	_position.col = y;
 }
 
 void Robot::setAsDead() {
@@ -111,17 +111,16 @@ void Robot::show() const {
 // Post
 
 Post::Post(int row, int col, char type) {
-	_row = row;
-	_col = col;
+	_position = {row, col};
 	_type = type;
 }
 
 int Post::getRow() const {
-	return _row;
+	return _position.row;
 }
 
 int Post::getCol() const {
-	return _col;
+	return _position.col;
 }
 
 char Post::getSymbol() const {
@@ -136,8 +135,7 @@ bool Post::isElectrified() const {
 }
 
 void Post::setPosition(const Position &pos) {
-	_row = pos.row;
-	_col = pos.col;
+	_position = pos;
 }
 
 void Post::show() const {
@@ -177,10 +175,14 @@ int Maze::getnumRows() const {
 
 void Maze::show() const {
 	vector<vector<char>> maze = {};
-	vector<char> v = {};
+	vector<char> v;
 	
 	for (size_t i = 0; i < _numRows; i++) {
-		
+		v = {};
+		for (size_t j = 0; j < _numCols; j++) {
+			v.push_back(' ');
+		}
+		maze.push_back(v);
 	}
 	
 	for (Post p : _posts) {
@@ -192,9 +194,9 @@ void Maze::show() const {
 		maze[gate.row][gate.col] = 'O';
 	}
 	
-
+	// print
 	for (int i = 0; i < _numRows; i++) {
-		for (int j = 0; j < _numRows; j++) {
+		for (int j = 0; j < _numCols; j++) {
 			cout << maze[i][j] << ' ';
 		}
 		cout << endl;
@@ -215,6 +217,7 @@ Game::Game(const string & filename) {
 		vector<Position> gates = {};
 		Player player;
 		string line;
+		int nRobot = 1;
 		int i = 0, nrow, ncol;
 
 		// get number of rows and cols
@@ -229,7 +232,8 @@ Game::Game(const string & filename) {
 					Post pst(i, j, line[j]);
 					posts.push_back(pst);
 				} else if ( line[j] == 'R') {
-					Robot rbt(i, j);
+					Robot rbt(i, j, nRobot);
+					nRobot++;
 					robots.push_back(rbt);
 				} else if (line[j] == 'H') {
 					Player player(i, j, 'h'); 
@@ -249,6 +253,10 @@ Game::Game(const string & filename) {
 
 	}
 };
+
+bool Game::collide(Robot& robot, Post& post) {
+	return true;
+}
 
 /*
     public:
