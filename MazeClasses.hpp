@@ -7,10 +7,6 @@
 #include <cstdlib>
 using namespace std;
 
-struct Movement {
- int dRow, dCol; // displacement, taking into account the chosen movement
-};
-
 struct Position {
  int row, col;
 };
@@ -25,17 +21,16 @@ class Player {
         char getSymbol() const;
         bool isAlive() const;
         void setAsDead();
-        bool move(Movement delta);
+        bool move(Position & movement);
         void show() const;
     private:
-        int _row, _col;
+        Position _position, _movement;
         char _symbol;
 };
 
 class Robot {
     public:
-        enum State { ALIVE, STUCK, DEAD };
-        Robot(int row, int col);
+        Robot(int row, int col, int id);
         int getID() const;
         char getSymbol() const; // get char representation of robot (R if alive, r if dead)
         int getRow() const;
@@ -49,9 +44,9 @@ class Robot {
         void show() const;
     //other methods
     private:
-        static int _robotCounter; //used to attribute automatically the id to the robots
+        // static int _robotCounter; //used to attribute automatically the id to the robots
         int _id;
-        int _row, _col;
+        Position _position, _movement;
         bool _alive;
     // other attributes (?)
 };
@@ -67,10 +62,9 @@ class Post {
         void show() const;
  //other methods
     private:
-        int _row, _col;
+        Position _position;
         char _type; // '*' - electrified; '+'- non-electrified
         // other attributes (?)
-        // could also have a state, like the robot(?)
 };
 
 class Maze {
