@@ -1,6 +1,0 @@
-Player          - Time
-----------------------
-Asdrubal         - 084
-Joao             - 099
-Antonio          - 115
-Pro Gamer        - 516

@@ -1,7 +1,0 @@
-Player          - Time
-----------------------
-Zecarias         - 15
-Asdrubal         - 59
-Joao             - 70
-Antonio          - 110
-Pro Gamer        - 530

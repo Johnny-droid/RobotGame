@@ -45,6 +45,7 @@ class Robot {
         void setRow(int x);
         void setCol(int y);
         void setPosition(const Position &pos);
+        void setMovement(const Position &mov);
         void setAsDead();
         void show() const;
     //other methods
@@ -63,11 +64,14 @@ class Post {
         int getCol() const;
         char getSymbol() const; // get char representation of Post
         bool isElectrified() const;
+        bool isDestroyed();
         void setPosition(const Position &pos);
+        void setDestroyed();
         void show() const;
  //other methods
     private:
         Position _position;
+        bool _destroyed;
         char _type; // '*' - electrified; '+'- non-electrified
         // other attributes (?)
 };

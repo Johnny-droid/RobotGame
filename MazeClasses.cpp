@@ -91,10 +91,13 @@ void Robot::setPosition(const Position &pos) {
 	_position = pos;
 }
 
-/*
-Position Robot::getPosition() const {}
+void Robot::setMovement(const Position& mov) {
+	_movement = mov;
+}
 
-*/
+Position Robot::getPosition() const {
+	return _position;
+}
 
 void Robot::setRow(int x) {
 	_position.row = x;
@@ -118,9 +121,10 @@ void Robot::show() const {
 
 // Post
 
-Post::Post(int row, int col, char type) {
+Post::Post(int row, int col, char type, bool destroyed = false) {
 	_position = {row, col};
 	_type = type;
+	_destroyed = destroyed;
 }
 
 int Post::getRow() const {
@@ -142,8 +146,17 @@ bool Post::isElectrified() const {
 	return false;
 }
 
+bool Post::isDestroyed() {
+	return _destroyed;
+}
+
+
 void Post::setPosition(const Position &pos) {
 	_position = pos;
+}
+
+void Post::setDestroyed() {
+	_destroyed = true;
 }
 
 void Post::show() const {
@@ -265,10 +278,14 @@ Game::Game(const string & filename) {
 bool Game::collide(Robot& robot, Post& post) {
 	Position future_pos = {robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
 	if (future_pos.row == post.getRow && future_pos.col == post.getCol()) {
-		if (post.isElectrified()) {
-			
+		robot.setAsDead();
+		if (!post.isElectrified()) {
+			robot.setPosition(future_pos);
+			post.setDestroyed();
 		}
+		return true;
 	}
+	return false;
 }
 
 /*
