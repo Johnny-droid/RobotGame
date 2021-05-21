@@ -18,10 +18,12 @@ class Player {
         Player();
         int getRow() const;
         int getCol() const;
+        int getMovCol() const;
+        int getMovRow() const;
         char getSymbol() const;
         bool isAlive() const;
         void setAsDead();
-        bool move(Position & movement);
+        void setMovement(Position & movement);
         void show() const;
     private:
         Position _position, _movement;
@@ -35,7 +37,10 @@ class Robot {
         char getSymbol() const; // get char representation of robot (R if alive, r if dead)
         int getRow() const;
         int getCol() const;
+        int getMovRow() const;
+        int getMovCol() const;
         Position getPosition() const;
+        Position getMovement() const;
         bool isAlive() const;
         void setRow(int x);
         void setCol(int y);

@@ -75,6 +75,14 @@ int Robot::getCol() const {
 	return _position.col;
 }
 
+int Robot::getMovRow() const {
+	return _movement.row;
+}
+
+int Robot::getMovCol() const {
+	return _movement.col;
+}
+
 bool Robot::isAlive() const {
 	return _alive;
 }
@@ -255,7 +263,12 @@ Game::Game(const string & filename) {
 };
 
 bool Game::collide(Robot& robot, Post& post) {
-	return true;
+	Position future_pos = {robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
+	if (future_pos.row == post.getRow && future_pos.col == post.getCol()) {
+		if (post.isElectrified()) {
+			
+		}
+	}
 }
 
 /*
