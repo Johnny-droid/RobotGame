@@ -1,0 +1,26 @@
+           Here are the game's rules!
+
+           Controls:
+                 -----------                          ----------------------------------- 
+                | Q | W | E |               :.       |  UP & LEFT  |  UP  |  UP & RIGHT  |
+                -------------   :::::::::::::::.     -------------------------------------
+                | A | S | D |   :::::::::::::::::.   |     LEFT    | STAY |     Right    |
+            	-------------   ::::::::::::::::'    -------------------------------------
+                | Z | X | C |               ::'      | DOWN & LEFT | DOWN | DOWN & RIGHT |
+                 -----------                '         ----------------------------------- 
+
+
+          Your Objective:
+           ------------------------------------------------------------------------------------- 
+          | -> You have to destroy all the robots and survive their attack.                     |
+          |                                                                                     |
+          | -> To destroy them, you can navigate through the maze and try to bait the robots    |
+          | into hitting a fence, a pole or another fellow robot. This way they will be unable  |
+          | to pursue you.                                                                      |
+          |                                                                                     |
+          | -> However, you must be careful. Don't let the robots corner you. If they touch     |
+          | you, they will capture you and it's game over. Also, you're not allowed to run into |
+          | a destroyed robot, otherwise you'd die. Strategize your movements.                  |
+           -------------------------------------------------------------------------------------
+
+          Press any key to continue.
