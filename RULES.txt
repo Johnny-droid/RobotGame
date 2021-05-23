@@ -12,15 +12,19 @@
 
           Your Objective:
            ------------------------------------------------------------------------------------- 
-          | -> You have to destroy all the robots and survive their attack.                     |
+          | -> In order to win, you have to either escape the maze or destroy all the robots.   |
           |                                                                                     |
-          | -> To destroy them, you can navigate through the maze and try to bait the robots    |
-          | into hitting a fence, a pole or another fellow robot. This way they will be unable  |
-          | to pursue you.                                                                      |
+          | -> To escape the maze, you have to enter one of the exit gates. You can find them   |
+          | on the exterior walls and will be represented by an "O".                            |
+          |                                                                                     |
+          | -> To destroy the robots, you can navigate through the maze and try to bait them    |
+          | into hitting a wall, a post (eletrified or not) or another fellow robot. This way   |
+          | they will be unable to pursue you.                                                  |
           |                                                                                     |
           | -> However, you must be careful. Don't let the robots corner you. If they touch     |
           | you, they will capture you and it's game over. Also, you're not allowed to run into |
-          | a destroyed robot, otherwise you'd die. Strategize your movements.                  |
+          | a destroyed robot, otherwise you'd die, same thing goes for any type of post.       |
+          | Strategize your movements.                                                          |
            -------------------------------------------------------------------------------------
 
           Press any key to continue.
