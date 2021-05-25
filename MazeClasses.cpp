@@ -38,7 +38,7 @@ bool Player::isAlive() const {
 	return false;
 }
 
-void Player::show() const {
+void Player::show() const {                                        //show, just for testing
 	cout << "Number of row: " << getRow() << endl;
 	cout << "Number of col: " << getCol() << endl;
 	cout << "Symbol: " << getSymbol() << endl;
@@ -91,7 +91,7 @@ void Robot::setPosition(const Position &pos) {
 	_position = pos;
 }
 
-void Robot::setMovement(const Position& mov) {
+void Robot::setMovement(const Position &mov) {
 	_movement = mov;
 }
 
@@ -111,7 +111,7 @@ void Robot::setAsDead() {
 	_alive = false;
 }
 
-void Robot::show() const {
+void Robot::show() const {                                    //show, just for testing
 	cout << "Number of row: " << getRow() << endl;
 	cout << "Number of col: " << getCol() << endl;
 	cout << "Number of ID: " << getID() << endl;
@@ -159,7 +159,7 @@ void Post::setDestroyed() {
 	_destroyed = true;
 }
 
-void Post::show() const {
+void Post::show() const {                                 //show, just for testing
 	cout << "Number of row: " << getRow() << endl;
 	cout << "Number of col: " << getCol() << endl;
 	cout << "Symbol: " << getSymbol() << endl;
@@ -284,6 +284,30 @@ bool Game::collide(Robot& robot, Post& post) {
 			post.setDestroyed();
 		}
 		return true;
+	}
+	return false;
+}
+
+bool Game::collide(Robot& robot, Player& player) {
+	Position robot_future_pos = { robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
+	Position player_future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
+	if (robot_future_pos.row == player_future_pos.row && robot_future_pos.col == player_future_pos.col) {
+		player.setAsDead;
+		//falta coisas 
+	}
+
+}
+
+bool collide(Post& post, Player& player) {
+	Position future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
+	if (future_pos.row == post.getRow && future_pos.col == post.getCol()) {
+		if (post.isElectrified()) {
+			player.setAsDead();
+			return true;
+		}
+		cout << "\nYou can't run into a post. Move somewhere else. ";
+	    //pedir input para outra direção
+		return false;
 	}
 	return false;
 }
