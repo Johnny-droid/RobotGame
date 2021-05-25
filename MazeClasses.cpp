@@ -290,15 +290,23 @@ bool Game::collide(Robot& robot, Post& post) {
 
 bool Game::collide(Robot& robot, Player& player) {
 	Position robot_future_pos = { robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
+	Position robot_present_pos = { robot.getRow(), robot.getMovCol };
 	Position player_future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
-	if (robot_future_pos.row == player_future_pos.row && robot_future_pos.col == player_future_pos.col) {
-		player.setAsDead;
-		//falta coisas 
+	Position player_present_pos = { player.getRow(), player.getCol() };
+	if (robot_present_pos.row == player_future_pos.row && robot_present_pos.col == player_future_pos.col) {     //o player tenta ir para onde está um robot (player futuro vs robot presente)
+		cout << "\nYou can't run into a robot. You would die! Move somewhere else. ";
+	    //pedir input para outra direção
 	}
-
+	else if (robot_present_pos.row == player_present_pos.row && robot_present_pos.col == player_present_pos.col) {  //o robot alcança o player (presentes ou futuros???) depende de quando atualizar a pos
+		player.setAsDead();
+		//meter nessa posição o "h" e o robot desaparece
+		return true;
+	}
+	return false;
+	}
 }
-
-bool collide(Post& post, Player& player) {
+//eu não entendo pq é que o codigo abaixo ta sem cor, nao sei se é bug ou não
+bool Game::collide(Post& post, Player& player) {
 	Position future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
 	if (future_pos.row == post.getRow && future_pos.col == post.getCol()) {
 		if (post.isElectrified()) {
@@ -311,6 +319,7 @@ bool collide(Post& post, Player& player) {
 	}
 	return false;
 }
+
 
 /*
     public:
