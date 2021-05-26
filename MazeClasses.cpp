@@ -27,6 +27,14 @@ int Player::getRow() const {
 	return _position.row;
 }
 
+int Player::getMovCol() const {
+	return _movement.col;
+}
+
+int Player::getMovRow() const {
+	return _movement.row;
+}
+
 char Player::getSymbol() const {
 	return _symbol;
 }
@@ -121,7 +129,7 @@ void Robot::show() const {                                    //show, just for t
 
 // Post
 
-Post::Post(int row, int col, char type, bool destroyed = false) {
+Post::Post(int row, int col, char type, bool destroyed /*=false*/) {
 	_position = {row, col};
 	_type = type;
 	_destroyed = destroyed;
@@ -277,7 +285,7 @@ Game::Game(const string & filename) {
 
 bool Game::collide(Robot& robot, Post& post) {
 	Position future_pos = {robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
-	if (future_pos.row == post.getRow && future_pos.col == post.getCol()) {
+	if (future_pos.row == post.getRow() && future_pos.col == post.getCol()) {
 		robot.setAsDead();
 		if (!post.isElectrified()) {
 			robot.setPosition(future_pos);
@@ -289,32 +297,30 @@ bool Game::collide(Robot& robot, Post& post) {
 }
 
 bool Game::collide(Robot& robot, Player& player) {
+	// o player e o robo n v√£o ter a mesma posi√ß√£o, pk n vamos deixar o jogador se mexer para a√≠. Mas isso fazemos na leitura da jogada do player
 	Position robot_future_pos = { robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
-	Position robot_present_pos = { robot.getRow(), robot.getMovCol };
+	Position robot_present_pos = { robot.getRow(), robot.getMovCol() };
 	Position player_future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
 	Position player_present_pos = { player.getRow(), player.getCol() };
-	if (robot_present_pos.row == player_future_pos.row && robot_present_pos.col == player_future_pos.col) {     //o player tenta ir para onde est· um robot (player futuro vs robot presente)
-		cout << "\nYou can't run into a robot. You would die! Move somewhere else. ";
-	    //pedir input para outra direÁ„o
-	}
-	else if (robot_present_pos.row == player_present_pos.row && robot_present_pos.col == player_present_pos.col) {  //o robot alcanÁa o player (presentes ou futuros???) depende de quando atualizar a pos
+
+	if (robot_present_pos.row == player_present_pos.row && robot_present_pos.col == player_present_pos.col) {  //o robot alcanÔøΩa o player (presentes ou futuros???) depende de quando atualizar a pos
 		player.setAsDead();
-		//meter nessa posiÁ„o o "h" e o robot desaparece
+		//meter nessa posiÔøΩÔøΩo o "h" e o robot desaparece
 		return true;
 	}
 	return false;
-	}
 }
-//eu n„o entendo pq È que o codigo abaixo ta sem cor, nao sei se È bug ou n„o
+
+//eu nÔøΩo entendo pq ÔøΩ que o codigo abaixo ta sem cor, nao sei se ÔøΩ bug ou nÔøΩo
 bool Game::collide(Post& post, Player& player) {
 	Position future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
-	if (future_pos.row == post.getRow && future_pos.col == post.getCol()) {
+	if (future_pos.row == post.getRow() && future_pos.col == post.getCol()) {
 		if (post.isElectrified()) {
 			player.setAsDead();
 			return true;
 		}
 		cout << "\nYou can't run into a post. Move somewhere else. ";
-	    //pedir input para outra direÁ„o
+	    //pedir input para outra direÔøΩÔøΩo
 		return false;
 	}
 	return false;

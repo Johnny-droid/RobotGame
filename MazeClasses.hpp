@@ -59,7 +59,7 @@ class Robot {
 
 class Post {
     public:
-        Post(int row, int col, char type);
+        Post(int row, int col, char type, bool destroyed = false);
         int getRow() const;
         int getCol() const;
         char getSymbol() const; // get char representation of Post
