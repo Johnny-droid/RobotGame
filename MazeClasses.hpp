@@ -11,6 +11,16 @@ struct Position {
  int row, col;
 };
  
+class Menu {
+    public: 
+        Menu(int menuCtrl);
+        string readMazeNumber();
+        void showTitle() const;
+
+
+    private:
+        int _menuCtrl;
+};
 
 class Player {
     public:
@@ -20,10 +30,13 @@ class Player {
         int getCol() const;
         int getMovCol() const;
         int getMovRow() const;
+        Position getMovement() const;
+        Position getPosition() const;
         char getSymbol() const;
         bool isAlive() const;
         void setAsDead();
         void setMovement(Position & movement);
+        void updateMovement();
         void show() const;
     private:
         Position _position, _movement;
@@ -46,6 +59,7 @@ class Robot {
         void setCol(int y);
         void setPosition(const Position &pos);
         void setMovement(const Position &mov);
+        void updateMovement();
         void setAsDead();
         void show() const;
     //other methods
@@ -62,6 +76,7 @@ class Post {
         Post(int row, int col, char type, bool destroyed = false);
         int getRow() const;
         int getCol() const;
+        Position getPosition() const;
         char getSymbol() const; // get char representation of Post
         bool isElectrified() const;
         bool isDestroyed();
@@ -83,6 +98,8 @@ class Maze {
         void addPost(const Post& post);
         int getnumRows() const;
         int getnumCols() const;
+        vector<Position> getGates() const;
+        vector<Post> getPosts() const;
         void show() const;
         // other methods
     private:
@@ -95,8 +112,6 @@ class Maze {
 class Game {
     public:
         Game(const string & filename);
-        // This constructor should initialize the Maze, the vector of Robots, and the Player,
-        // using the chars read from the file
         bool play(); // implements the game loop; returns true if player wins, false otherwise
         bool isValid();
     
@@ -105,6 +120,7 @@ class Game {
         bool collide(Robot& robot, Post& post); // check if robot collided with post (and possibly set it as dead)
         bool collide(Robot& robot, Player& player); // check if human and robot collided (and possibly set human as dead)
         bool collide(Post& post, Player& player); //check if human collided with post
+        void readHumanPlay();
         // other methods, for example:
         // to check if player is trying to move to a valid place
         // to apply a valid play and check collisions

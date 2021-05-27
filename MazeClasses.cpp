@@ -6,6 +6,59 @@
 #include "MazeClasses.hpp"
 using namespace std;
 
+Position operator+(Position pos1, Position pos2) {
+	return {pos1.row + pos2.row, pos1.col + pos2.col };
+}
+
+bool operator==(Position pos1, Position pos2) {
+	if (pos1.row == pos2.row && pos1.col == pos2.col) {
+		return true;
+	}
+	return false;
+}
+
+// Menu
+
+ void Menu::showTitle() const {
+	cout << "\n\n";
+    cout << "\t\t\t _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
+    cout << "\t\t\t|  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
+    cout << "\t\t\t| |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
+    cout << "\t\t\t|  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
+    cout << "\t\t\t| | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
+    cout << "\t\t\t|_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ " << endl;
+    cout << endl;
+}
+
+string Menu::readMazeNumber() {
+	int n;
+    string str;
+    bool success = false;
+
+    while (!success) {
+        success = true;
+        cout << setw(45) <<"\nPlease enter a maze number: ";
+        cin >> n;
+        if ( n < 0 || n > 99 || cin.fail()) {
+            if (cin.eof()) {
+                exit(0);
+            }
+            cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
+            success = false;
+        }
+        else if (n > 60 && n < 100) {
+            cout << "Actually, this game has only 60 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
+            success = false;
+        }
+    }
+
+    if (n < 10 && n > 0) {
+        str = "0" + to_string(n);
+        return str;
+    }
+    return to_string(n);
+}
+
 
 // Player
 
@@ -35,6 +88,14 @@ int Player::getMovRow() const {
 	return _movement.row;
 }
 
+Position Player::getPosition() const {
+	return _position;
+}
+
+Position Player::getMovement() const {
+	return _movement;
+}
+
 char Player::getSymbol() const {
 	return _symbol;
 }
@@ -55,6 +116,15 @@ void Player::show() const {                                        //show, just 
 
 void Player::setAsDead() {
 	_symbol = 'h';
+}
+
+void Player::setMovement(Position & movement) {
+	_movement = movement;
+}
+
+void Player::updateMovement() {
+	_position = {_position.row + _movement.row, _position.col + _movement.col};
+	_movement = {0, 0};
 }
 
 // Robot
@@ -103,8 +173,17 @@ void Robot::setMovement(const Position &mov) {
 	_movement = mov;
 }
 
+void Robot::updateMovement() {
+	_position = _position + _movement;
+	_movement = {0, 0};
+}
+
 Position Robot::getPosition() const {
 	return _position;
+}
+
+Position Robot::getMovement() const {
+	return _movement;
 }
 
 void Robot::setRow(int x) {
@@ -145,6 +224,10 @@ int Post::getCol() const {
 
 char Post::getSymbol() const {
 	return _type;
+}
+
+Position Post::getPosition() const {
+	return _position;
 }
 
 bool Post::isElectrified() const {
@@ -201,6 +284,14 @@ int Maze::getnumCols() const {
 int Maze::getnumRows() const {
 	return _numRows;
 };
+
+vector<Position> Maze::getGates() const {
+	return _gates;
+}
+
+vector<Post> Maze::getPosts() const {
+	return _posts;
+}
 
 void Maze::show() const {
 	vector<vector<char>> maze = {};
@@ -284,11 +375,10 @@ Game::Game(const string & filename) {
 };
 
 bool Game::collide(Robot& robot, Post& post) {
-	Position future_pos = {robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
-	if (future_pos.row == post.getRow() && future_pos.col == post.getCol()) {
+	if (robot.getPosition() + robot.getMovement() == post.getPosition()) {
 		robot.setAsDead();
 		if (!post.isElectrified()) {
-			robot.setPosition(future_pos);
+			robot.updateMovement();
 			post.setDestroyed();
 		}
 		return true;
@@ -297,35 +387,135 @@ bool Game::collide(Robot& robot, Post& post) {
 }
 
 bool Game::collide(Robot& robot, Player& player) {
-	// o player e o robo n vão ter a mesma posição, pk n vamos deixar o jogador se mexer para aí. Mas isso fazemos na leitura da jogada do player
-	Position robot_future_pos = { robot.getRow() + robot.getMovRow() , robot.getCol() + robot.getMovCol() };
-	Position robot_present_pos = { robot.getRow(), robot.getMovCol() };
-	Position player_future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
-	Position player_present_pos = { player.getRow(), player.getCol() };
-
-	if (robot_present_pos.row == player_present_pos.row && robot_present_pos.col == player_present_pos.col) {  //o robot alcan�a o player (presentes ou futuros???) depende de quando atualizar a pos
-		player.setAsDead();
-		//meter nessa posi��o o "h" e o robot desaparece
+	if ( (robot.getPosition() + robot.getMovement()) == (player.getMovement() + player.getPosition()) ) {
 		return true;
 	}
 	return false;
 }
 
-//eu n�o entendo pq � que o codigo abaixo ta sem cor, nao sei se � bug ou n�o
 bool Game::collide(Post& post, Player& player) {
-	Position future_pos = { player.getRow() + player.getMovRow(), player.getCol() + player.getMovCol() };
-	if (future_pos.row == post.getRow() && future_pos.col == post.getCol()) {
-		if (post.isElectrified()) {
-			player.setAsDead();
-			return true;
-		}
-		cout << "\nYou can't run into a post. Move somewhere else. ";
-	    //pedir input para outra dire��o
-		return false;
+	if (player.getPosition() + player.getMovement() == post.getPosition()) {
+		return true;
 	}
 	return false;
 }
 
+void Game::showGameDisplay() const {
+	vector<vector<char>> mazeDisplay = {};
+	vector<char> v;
+	
+	for (size_t i = 0; i < _maze.getnumRows(); i++) {
+		v = {};
+		for (size_t j = 0; j < _maze.getnumCols(); j++) {
+			v.push_back(' ');
+		}
+		mazeDisplay.push_back(v);
+	}
+	
+	//posts
+	for (Post p : _maze.getPosts()) {
+		mazeDisplay[p.getRow()][p.getCol()] = p.getSymbol();
+	}
+
+	//gates
+	for (Position gate : _maze.getGates()) {
+		mazeDisplay[gate.row][gate.col] = 'O';
+	}
+	
+	//robots
+	for (Robot r : _robots) {
+		mazeDisplay[r.getRow()][r.getCol()] = r.getSymbol();
+	}
+
+	//player
+	mazeDisplay[_player.getRow()][_player.getCol()] = _player.getSymbol();
+
+	// print
+	for (int i = 0; i < _maze.getnumRows(); i++) {
+		for (int j = 0; j < _maze.getnumCols(); j++) {
+			cout << mazeDisplay[i][j] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+void Game::readHumanPlay() {
+	cout << setw(60) << "-------------" << endl;
+    cout << setw(60) << "| Q | W | E |" << endl;
+    cout << setw(60) << "-------------" << endl;
+    cout << setw(60) << "| A | S | D |" << endl;
+    cout << setw(60) << "-------------" << endl;
+    cout << setw(60) << "| Z | X | C |" << endl;
+    cout << setw(60) << "-------------" << endl;
+
+    char ch;
+	bool validPos;
+	Position mov;
+    do {
+        do {
+            cout << "Enter key: ";
+            cin >> ch;
+            cin.ignore(10000, '\n');
+            ch = toupper(ch);
+            if ((ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' ) || cin.fail()) {
+                if (cin.eof()) {
+                    exit(0);
+                }
+                cin.clear();
+                cin.ignore(100000, '\n');
+                cout << "Invalid input!\n";
+            }
+            
+        } while (ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' );
+
+        switch (ch) {
+            case 'Q':
+				mov = {-1, -1};
+                break;
+            case 'W':
+				mov = {-1, 0};
+                break;
+            case 'E':
+				mov = {-1, 1};
+                break;
+            case 'A':
+				mov = {0, -1};
+                break;
+            case 'D':
+				mov = {0, 1};
+                break;
+            case 'Z':
+				mov = {1, -1};
+                break;
+            case 'X':
+				mov = {1, 0};
+                break;
+            case 'C':
+				mov = {1, 1};
+                break;
+            default:
+				mov = {0, 0};
+                break;
+        };
+		_player.setMovement(mov);
+		validPos = true;
+		for (Robot r: _robots) {
+			if (!r.isAlive() && collide(r, _player)) {
+				validPos = false;
+				break;
+			}
+		}
+
+		for (Post p: _maze.getPosts()) {
+			if (!p.isElectrified() && collide(p, _player)) {
+				validPos = false;
+				break;
+			}
+		}
+        
+    } while (!validPos);
+    _player.updateMovement();
+}
 
 /*
     public:
