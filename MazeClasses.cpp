@@ -60,10 +60,116 @@ string Menu::readMazeNumber() {
 }
 
 
+
+string Menu::strip(string str) {
+    // removes the leading and trailing whitespaces of a string
+    size_t start = str.find_first_not_of(' ');
+    size_t end = str.find_last_not_of(' ');
+    return str.substr(start, end-start+1);
+};
+
+string Menu::fill15(string name) {
+    while (name.length() < 15) {
+        name += ' ';
+    }
+    return name; 
+};
+
+string Menu::readName() {
+    // reads the name of the player, but it can only have 15 characters!!!
+    // if smaller, fills the name with whitespace
+    string name;
+    do {
+        cout << "Enter your name: ";
+        cin >> name;
+        if ( name.length() > 15 || cin.fail()) {
+            if (cin.eof()) {
+                exit(0);
+            }
+            cin.clear();
+            cin.ignore(100000, '\n');
+            cout << "Invalid input!\n";
+        }
+    } while (name.length() > 15);
+
+    return fill15(name);  
+}
+
+void Menu::bubbleSort(vector<PlayerTable> &v) {
+    // sorting function to sort the times of the winners
+    PlayerTable aux;
+    bool change = true;
+    while (change) {
+        change = false;
+        for (int i = 0; i < v.size()-1; i++) {
+            if (v[i].time > v[i+1].time ) {
+                change = true;
+                aux = v[i];
+                v[i] = v[i+1];
+                v[i+1] = aux;
+            }
+        }
+    }
+}
+
+void Menu::gameOver(int x, int time, string filename) {
+    // check if it won, and if so
+    // ask the name
+    // sort the winning times
+    if (x == 2) {
+        cout << "Congratulations, you won!!!" << endl;
+
+        ifstream file;
+        file.open(filename);
+        if (!file.is_open()) {
+            cout << "File not found" << endl;
+        } else {
+            vector<PlayerTable> v = {};
+            PlayerTable p;
+            string line;
+            size_t pos;
+
+            p.name = readName();
+            p.time = time;
+            v.push_back(p);
+
+            ofstream temp;
+            temp.open("temp.txt");
+
+            getline(file, line);    // ignore the first 2 lines of the file
+            temp << line << endl;   // Lines: (Player - Time) and (---------)     we can put it in a cycle, but there's only 2...
+            getline(file, line);    
+            temp << line << endl;   
+            while (getline(file, line)) {
+                pos = line.find('-') + 1;
+                p.time = stoi(strip(line.substr(pos)));
+                p.name = fill15(strip(line.substr(0, 15)));
+                v.push_back(p);
+            }
+            bubbleSort(v);
+            
+            cout << "\nNew times: " << endl;
+            for(int i = 0; i < v.size(); i++) {
+                temp << v[i].name << "  - " << v[i].time << endl;
+                cout << v[i].name << "  - " << v[i].time << endl;
+            }
+            temp.close();
+            file.close();
+            const char* filename_c = filename.c_str();
+            remove(filename_c);
+            rename("temp.txt", filename_c);
+            cout << "\nI hope you have enjoyed our game!";
+        }
+    } else {
+        cout << "Game Over!" << endl;
+        cout << "You Lost" << endl;
+    }
+}
 // Player
 
 Player::Player(int row, int col, char symbol) {
-	_position = {row, col};
+	Position pos =  {row, col};
+	_position = pos;
 	_symbol = symbol;
 }
 
@@ -122,6 +228,11 @@ void Player::setMovement(Position & movement) {
 	_movement = movement;
 }
 
+void Player::setMovementZero() {
+	Position movement = {0, 0};
+	_movement = movement;
+}
+
 void Player::updateMovement() {
 	_position = {_position.row + _movement.row, _position.col + _movement.col};
 	_movement = {0, 0};
@@ -129,9 +240,10 @@ void Player::updateMovement() {
 
 // Robot
 
-Robot::Robot(int row, int col, int id) {
+Robot::Robot(int row, int col, int id, bool alive) {
 	_position = {row, col};
 	_id = id;
+	_alive = alive;
 }
 
 int Robot::getID() const {
@@ -173,6 +285,11 @@ void Robot::setMovement(const Position &mov) {
 	_movement = mov;
 }
 
+void Robot::setMovementZero() {
+	Position movement = {0, 0};
+	_movement = movement;
+}
+
 void Robot::updateMovement() {
 	_position = _position + _movement;
 	_movement = {0, 0};
@@ -205,6 +322,7 @@ void Robot::show() const {                                    //show, just for t
 	cout << "Symbol: " << getSymbol() << endl;
 	cout << "Alive: " << isAlive() << endl;
 }
+
 
 // Post
 
@@ -330,15 +448,13 @@ Game::Game(const string & filename) {
     file.open(filename);
     if (!file.is_open()) {
         cout << "Maze not found!" << endl;
-    }
-	else {
+    } else {
 		vector<Post> posts = {};
 		vector<Robot> robots = {};
 		vector<Position> gates = {};
-		Player player;
 		string line;
 		int nRobot = 1;
-		int i = 0, nrow, ncol;
+		int i = 0, nrow, ncol, row, col;
 
 		// get number of rows and cols
 		getline(file, line);
@@ -356,7 +472,8 @@ Game::Game(const string & filename) {
 					nRobot++;
 					robots.push_back(rbt);
 				} else if (line[j] == 'H') {
-					Player player(i, j, 'h'); 
+					row = i;
+					col = j;
 				} else if (line[j] == 'O') {
 					Position gate = {i, j};
 					gates.push_back(gate);
@@ -366,10 +483,11 @@ Game::Game(const string & filename) {
 		};
 		file.close();
 		
+		Player pl(row, col, 'H');
 		Maze maze(nrow, ncol, gates, posts);
 		_maze = maze;
 		_robots = robots;
-		_player = player;
+		_player = pl;
 
 	}
 };
@@ -517,26 +635,98 @@ void Game::readHumanPlay() {
     _player.updateMovement();
 }
 
-/*
-    public:
-        Game(const string & filename);
-        // This constructor should initialize the Maze, the vector of Robots, and the Player,
-        // using the chars read from the file
-        bool play(); // implements the game loop; returns true if player wins, false otherwise
-        bool isValid();
-    
-    private:
-        void showGameDisplay() const;
-        bool collide(Robot& robot, Post& post); // check if robot collided with post (and possibly set it as dead)
-        bool collide(Robot& robot, Player& player); // check if human and robot collided (and possibly set human as dead)
-        // other methods, for example:
-        // to check if player is trying to move to a valid place
-        // to apply a valid play and check collisions
-        // to check if two robots collide (and possibly set them as dead)
-        // etc.
-    private:
-        Maze _maze;
-        Player _player;
-        vector<Robot> _robots;
-        //other attributes
-*/
+void Game::updateRobots() {
+	Position mov;
+	for (Robot r : _robots) {
+        if (!r.isAlive()) {
+			continue;
+		}
+		if (r.getCol() == _player.getCol() && r.getRow() < _player.getRow()) {
+			mov = {1, 0};
+        } else if (r.getCol() == _player.getCol() && r.getRow() > _player.getRow()) {
+            mov = {-1, 0};
+        } else if (r.getRow() == _player.getRow() && r.getCol() < _player.getCol()) {
+            mov = {0, 1};
+        } else if (r.getRow() == _player.getRow() && r.getCol() > _player.getCol()) {
+            mov = {0, -1};
+        } else if (r.getCol() < _player.getCol() && r.getRow() < _player.getRow()) {
+            mov = {1, 1};
+        } else if (r.getCol() < _player.getCol() && r.getRow() > _player.getRow()) {
+            mov = {-1, 1};
+        } else if (r.getCol() > _player.getCol() && r.getRow() < _player.getRow()) {
+            mov = {1, -1};
+        } else if (r.getCol() > _player.getCol() && r.getRow() > _player.getRow()) {
+            mov = {-1, -1};
+        }
+		r.setMovement(mov);
+    }
+}
+
+void Game::updateGame() {
+    //check for robot collisions with fences
+	for (Robot r: _robots) {
+		if (!r.isAlive()) {
+			continue;
+		}
+		for (Post p: _maze.getPosts()) {
+			if (r.getPosition() + r.getMovement() == p.getPosition()) {
+				r.setAsDead();
+				if (!p.isElectrified()) {
+					r.updateMovement();
+				} else {
+					r.setMovementZero();
+				}
+			}
+		}
+	}
+
+	//check for robot collisions with each other
+	for (size_t i = 0; i < _robots.size()-1; i++) {
+		for (size_t j = i+1; j < _robots.size(); j++) {
+			Robot& r1 = _robots[i];
+			Robot& r2 = _robots[j];
+			if (r1.getPosition() + r1.getMovement() == r2.getPosition() + r2.getMovement()) {
+				r1.updateMovement();
+				r2.updateMovement();
+				r1.setAsDead();
+				r2.setAsDead();
+			} 
+		}
+	}
+
+	//checks if human is still alive 
+	for (Post p: _maze.getPosts()) {
+		if (collide(p, _player)) {
+			_player.setAsDead();
+			_player.setMovementZero();
+			break;
+		}
+	}
+
+	for (Robot r: _robots) {
+		if (collide(r, _player)) {
+			_player.setAsDead();
+			_player.setMovementZero();
+			break;
+		}
+	}
+
+	//updates robots positions
+	for (Robot r: _robots) {
+		r.updateMovement();
+	}
+}
+
+// 0 - continue, 1 - robots win, 2 - hero/human wins
+int Game::checkGameOver() {
+	if (!_player.isAlive()) {
+		return 1;
+	}
+	for (Position gate : _maze.getGates()) {
+		if (gate == _player.getPosition() ) {
+			return 2;
+		}
+	}
+	return 0;
+} 
+

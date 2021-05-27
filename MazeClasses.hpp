@@ -10,13 +10,24 @@ using namespace std;
 struct Position {
  int row, col;
 };
+
+struct PlayerTable {
+    string name;
+    int time;
+};
  
 class Menu {
     public: 
         Menu(int menuCtrl);
         string readMazeNumber();
         void showTitle() const;
-
+        void gameOver(int x, int time, string filename);
+    
+    private:
+        string strip(string str);
+        string fill15(string name);
+        string readName();
+        void bubbleSort(vector<PlayerTable> &v);
 
     private:
         int _menuCtrl;
@@ -36,6 +47,7 @@ class Player {
         bool isAlive() const;
         void setAsDead();
         void setMovement(Position & movement);
+        void setMovementZero();
         void updateMovement();
         void show() const;
     private:
@@ -45,7 +57,7 @@ class Player {
 
 class Robot {
     public:
-        Robot(int row, int col, int id);
+        Robot(int row, int col, int id, bool alive = true);
         int getID() const;
         char getSymbol() const; // get char representation of robot (R if alive, r if dead)
         int getRow() const;
@@ -59,6 +71,7 @@ class Robot {
         void setCol(int y);
         void setPosition(const Position &pos);
         void setMovement(const Position &mov);
+        void setMovementZero();
         void updateMovement();
         void setAsDead();
         void show() const;
@@ -114,13 +127,18 @@ class Game {
         Game(const string & filename);
         bool play(); // implements the game loop; returns true if player wins, false otherwise
         bool isValid();
-    
-    private:
+        void readHumanPlay();
+        void updateRobots();
+        void updateGame();
         void showGameDisplay() const;
+        int checkGameOver();
+    private:
         bool collide(Robot& robot, Post& post); // check if robot collided with post (and possibly set it as dead)
         bool collide(Robot& robot, Player& player); // check if human and robot collided (and possibly set human as dead)
         bool collide(Post& post, Player& player); //check if human collided with post
-        void readHumanPlay();
+        
+        
+         // 0 - continue, 1 - robots win, 2 - hero/human wins
         // other methods, for example:
         // to check if player is trying to move to a valid place
         // to apply a valid play and check collisions
@@ -132,47 +150,3 @@ class Game {
         vector<Robot> _robots;
         //other attributes
 };
-
-/*
-class Post {
-    private:
-		bool eletric;
-		int coord_x;
-		int coord_y;
-};
-
-class Robot {
-	private:
-		bool alive;
-		int coord_x;
-		int coord_y;
-
-};
-
-class Player {
-    private:
-		bool alive;
-		int coord_x;
-		int coord_y;
-
-};
-
-class Maze {
-	private:
-		int dim_x;
-		int dim_y;
-		int coord_x_gate;
-		int coord_y_gate;
-		vector<Post> posts;
-
-};
-
-class Game {
-	private:
-		int time;
-		Maze maze;
-		Player player;
-		vector<Robot> robots;
-
-};
-*/

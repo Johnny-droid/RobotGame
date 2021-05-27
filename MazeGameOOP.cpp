@@ -6,11 +6,26 @@
 using namespace std;
 
 int main() {
-    int a = 1, b = 3;
-    char c = 'H';
-    Player p1(a, b, c);
-    p1.show();
     
+    Game MazeGame("MAZE_01.txt");
+    auto begin = chrono::steady_clock::now();
+    while (MazeGame.checkGameOver() == 0) {
+        MazeGame.showGameDisplay();
+        MazeGame.readHumanPlay();
+        MazeGame.updateRobots();
+        MazeGame.updateGame();
+    }
+
+    auto end = chrono::steady_clock::now();
+    auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
+    MazeGame.showGameDisplay();
+    _getch();
+
+    /*
+    gameOver(checkGameOver(maze), (int) elapsed.count(), "MAZE_" + maze_number + "_WINNERS.TXT"); // 30 x 10
+    _getch();
+    */
+
 }
 
 //menu 3) Winners, if empty say empty list, if not ask for maze number then show the list
