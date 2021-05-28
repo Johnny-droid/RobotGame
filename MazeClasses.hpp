@@ -21,6 +21,7 @@ class Menu {
         Menu(int menuCtrl);
         string readMazeNumber();
         void showTitle() const;
+        void showRules() const;
         void gameOver(int x, int time, string filename);
     
     private:
@@ -132,6 +133,8 @@ class Game {
         void updateGame();
         void showGameDisplay() const;
         int checkGameOver();
+        vector<Robot> getRobots() const;
+        
     private:
         bool collide(Robot& robot, Post& post); // check if robot collided with post (and possibly set it as dead)
         bool collide(Robot& robot, Player& player); // check if human and robot collided (and possibly set human as dead)

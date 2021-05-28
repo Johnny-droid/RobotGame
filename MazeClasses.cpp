@@ -198,6 +198,11 @@ void Menu::gameOver(int x, int time, string filename) {
         cout << "You Lost" << endl;
     }
 }
+/*
+void Menu::showRules() const {
+
+}
+*/
 // Player
 
 Player::Player(int row, int col, char symbol) {
@@ -275,6 +280,7 @@ void Player::updateMovement() {
 
 Robot::Robot(int row, int col, int id, bool alive) {
 	_position = {row, col};
+	_movement = {0, 0};
 	_id = id;
 	_alive = alive;
 }
@@ -349,11 +355,10 @@ void Robot::setAsDead() {
 }
 
 void Robot::show() const {                                    //show, just for testing
-	cout << "Number of row: " << getRow() << endl;
-	cout << "Number of col: " << getCol() << endl;
+	cout << "Row: " << getRow() << "\tCol: " << getCol() << endl;
+	cout << "Mov Row: " << getMovRow() << "\tMov Col: " << getMovCol() << endl;
 	cout << "Number of ID: " << getID() << endl;
 	cout << "Symbol: " << getSymbol() << endl;
-	cout << "Alive: " << isAlive() << endl;
 }
 
 
@@ -653,6 +658,7 @@ void Game::readHumanPlay() {
 		for (Robot r: _robots) {
 			if (!r.isAlive() && collide(r, _player)) {
 				validPos = false;
+				cout << "You can't move into a destroyed robot!!! Choose another direction!" << endl;
 				break;
 			}
 		}
@@ -660,17 +666,22 @@ void Game::readHumanPlay() {
 		for (Post p: _maze.getPosts()) {
 			if (!p.isElectrified() && collide(p, _player)) {
 				validPos = false;
+				cout << "You can't move into a post!!! Choose another direction!" << endl;
 				break;
+			} else if (p.isElectrified() && collide(p, _player)) {
+				_player.setAsDead();
 			}
 		}
         
     } while (!validPos);
-    _player.updateMovement();
+    if (_player.isAlive()) {
+		_player.updateMovement();
+	}
 }
 
 void Game::updateRobots() {
 	Position mov;
-	for (Robot r : _robots) {
+	for (Robot &r : _robots) {
         if (!r.isAlive()) {
 			continue;
 		}
@@ -690,15 +701,16 @@ void Game::updateRobots() {
             mov = {1, -1};
         } else if (r.getCol() > _player.getCol() && r.getRow() > _player.getRow()) {
             mov = {-1, -1};
-        }
+        } else {
+			mov = {0, 0};
+		}
 		r.setMovement(mov);
-		r.updateMovement();   //not sure
     }
 }
 
 void Game::updateGame() {
     //check for robot collisions with fences
-	for (Robot r: _robots) {
+	for (Robot &r: _robots) {
 		if (!r.isAlive()) {
 			continue;
 		}
@@ -729,7 +741,7 @@ void Game::updateGame() {
 	}
 
 	//checks if human is still alive 
-	for (Post p: _maze.getPosts()) {
+	for (Post &p: _maze.getPosts()) {
 		if (collide(p, _player)) {
 			_player.setAsDead();
 			_player.setMovementZero();
@@ -737,7 +749,7 @@ void Game::updateGame() {
 		}
 	}
 
-	for (Robot r: _robots) {
+	for (Robot &r: _robots) {
 		if (collide(r, _player)) {
 			_player.setAsDead();
 			_player.setMovementZero();
@@ -746,7 +758,7 @@ void Game::updateGame() {
 	}
 
 	//updates robots positions
-	for (Robot r: _robots) {
+	for (Robot &r: _robots) {
 		r.updateMovement();
 	}
 }
@@ -764,3 +776,6 @@ int Game::checkGameOver() {
 	return 0;
 } 
 
+vector<Robot> Game::getRobots() const {
+	return _robots;
+}

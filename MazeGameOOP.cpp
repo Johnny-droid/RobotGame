@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    
+    vector<Robot> v;
     Game MazeGame("MAZE_01.txt");
     auto begin = chrono::steady_clock::now();
     while (MazeGame.checkGameOver() == 0) {
