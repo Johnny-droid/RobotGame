@@ -20,6 +20,7 @@ bool operator==(Position pos1, Position pos2) {
 // Menu
 
  void Menu::showTitle() const {
+	// print the title screen
 	cout << "\n\n";
     cout << "\t\t\t _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
     cout << "\t\t\t|  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
@@ -34,11 +35,12 @@ bool operator==(Position pos1, Position pos2) {
 
 }
  int Menu::selectOption() const {
+	 // gets the option number
 	 int chosenOption;
 	 do {
 		 cout << "Enter option: ";
 		 cin >> chosenOption;
-		 if ((chosenOption != 0 && x != 1 && x != 2) || cin.fail()) {
+		 if ((chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3 &&) || cin.fail()) {
 			 if (cin.eof()) {
 				 exit(0);
 			 }
@@ -46,11 +48,70 @@ bool operator==(Position pos1, Position pos2) {
 			 cin.ignore(100000, '\n');
 			 cout << "Invalid input!\n";
 		 }
-	 } while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2);
+	 } while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3);
 	 return chosenOption;
  }
 
+ void Menu::executeOptions() const {
+	 // executes whatever the option number refers to
+	 do {
+		 menu_ctrl = selectOption() ; // returns 0 Exit, 1 Rules, 2 Play, 3 Winners
+		 if (menu_ctrl == 0) {
+			 return 0;
+		 }
+		 else if (menu_ctrl == 1) {
+			 printRules();
+		 }
+		 else if (menu_ctrl == 2) {
+			 maze_number = readMazeNumber();
+			 if (maze_number == "0") {
+				 menu_ctrl = 0;
+			 }
+			 else {
+				 maze = readFile("MAZE_" + maze_number + ".TXT");
+				 while (maze == error) {
+					 maze_number = readMazeNumber(false);
+					 if (maze_number == "0") {
+						 menu_ctrl = 0;
+						 break;
+					 }
+					 maze = readFile("MAZE_" + maze_number + ".TXT");
+				 }
+			 }
+		 }
+		 else if (menu_ctrl == 3) {
+			 string leaderboard;
+			 string leaderboard_number = readLeaderboardNumber();
+			 if (leaderboard_number == "0") {
+				 menu_ctrl = 0;
+			 }
+			 else {
+				 leaderboard = readFile("MAZE_" + leaderboard_number + "_WINNERS.TXT");                  //falta imprimir
+			 }
+		 }
+	 } while (menu_ctrl != 2);
+
+ }
+
+ void Menu::printRules() const {
+	 // prints the rules
+	 cout << '\n';
+	 fstream rulesFile;
+	 rulesFile.open("RULES.TXT", ios::in);                              //not sure se está direito a dar print
+	 char c;
+	 while true {
+		 rulesFile >> c;
+		 if (rulesFile.eof()) {
+			 break;
+		 }
+	     cout << c;
+	 }
+	 rulesFile.close;
+	 _getch();
+ }
+
 string Menu::readMazeNumber() {
+	// gets the maze number in a string
 	int n;
     string str;
     bool success = false;
@@ -99,12 +160,15 @@ string Menu::readMazeNumber() {
             cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
             success = false;
         }
-        else if (n > 60 && n < 100) {
+        else if (n > 3 && n < 100) {
             cout << "Actually, this game has only 3 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
             success = false;
         }
     }
-
+	if (n == 0) {
+		str = "0";
+		return str;
+	}
     if (n < 10 && n > 0) {
         str = "0" + to_string(n);
         return str;
@@ -112,7 +176,37 @@ string Menu::readMazeNumber() {
     return to_string(n);
 }
 
-
+string Menu::readLeaderboardNumber() {
+    // gets the leaderboard number in a string
+	bool sucess = false;
+	int n;
+	string str;
+	while (!success) {
+		cout << "Welome to the leaderboards!" << endl;
+		cout << "Please select a maze number to see its winners: ";
+		cin >> n;
+		if (n < 0 || n > 99 || cin.fail()) {
+			if (cin.eof()) {
+				exit(0);
+			}
+			cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
+			success = false;
+		}
+		else if (n > 3 && n < 100) {
+			cout << "Actually, this game has only 3 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
+			success = false;
+		}
+	}
+	if (n == 0) {
+		str = "0";
+		return str;
+	}
+	if (n < 10 && n > 0) {
+		str = "0" + to_string(n);
+		return str;
+	}
+	return to_string(n);
+}
 
 string Menu::strip(string str) {
     // removes the leading and trailing whitespaces of a string
@@ -122,6 +216,7 @@ string Menu::strip(string str) {
 };
 
 string Menu::fill15(string name) {
+	// puts blank spaces at the end of the name until it is 15 characters
     while (name.length() < 15) {
         name += ' ';
     }
@@ -218,11 +313,7 @@ void Menu::gameOver(int x, int time, string filename) {
         cout << "You Lost" << endl;
     }
 }
-/*
-void Menu::showRules() const {
 
-}
-*/
 // Player
 
 Player::Player(int row, int col, char symbol) {
@@ -271,7 +362,8 @@ bool Player::isAlive() const {
 	return false;
 }
 
-void Player::show() const {                                        //show, just for testing
+void Player::show() const {
+	// show, just for testing
 	cout << "Number of row: " << getRow() << endl;
 	cout << "Number of col: " << getCol() << endl;
 	cout << "Symbol: " << getSymbol() << endl;
@@ -374,7 +466,8 @@ void Robot::setAsDead() {
 	_alive = false;
 }
 
-void Robot::show() const {                                    //show, just for testing
+void Robot::show() const { 
+	// show, just for testing
 	cout << "Row: " << getRow() << "\tCol: " << getCol() << endl;
 	cout << "Mov Row: " << getMovRow() << "\tMov Col: " << getMovCol() << endl;
 	cout << "Number of ID: " << getID() << endl;
@@ -426,7 +519,8 @@ void Post::setDestroyed() {
 	_destroyed = true;
 }
 
-void Post::show() const {                                 //show, just for testing
+void Post::show() const { 
+	// show, just for testing
 	cout << "Number of row: " << getRow() << endl;
 	cout << "Number of col: " << getCol() << endl;
 	cout << "Symbol: " << getSymbol() << endl;
@@ -551,6 +645,7 @@ Game::Game(const string & filename) {
 };
 
 bool Game::collide(Robot& robot, Post& post) {
+	// did a collision between a robot and a post occur?
 	if (robot.getPosition() + robot.getMovement() == post.getPosition()) {
 		robot.setAsDead();
 		if (!post.isElectrified()) {
@@ -563,6 +658,7 @@ bool Game::collide(Robot& robot, Post& post) {
 }
 
 bool Game::collide(Robot& robot, Player& player) {
+	// did a collision between a robot and the player occur?
 	if ( (robot.getPosition() + robot.getMovement()) == (player.getMovement() + player.getPosition()) ) {
 		return true;
 	}
@@ -570,6 +666,7 @@ bool Game::collide(Robot& robot, Player& player) {
 }
 
 bool Game::collide(Post& post, Player& player) {
+	// did a collision between a post and the player occur?
 	if (player.getPosition() + player.getMovement() == post.getPosition()) {
 		return true;
 	}
@@ -588,22 +685,22 @@ void Game::showGameDisplay() const {
 		mazeDisplay.push_back(v);
 	}
 	
-	//posts
+	// posts
 	for (Post p : _maze.getPosts()) {
 		mazeDisplay[p.getRow()][p.getCol()] = p.getSymbol();
 	}
 
-	//gates
+	// gates
 	for (Position gate : _maze.getGates()) {
 		mazeDisplay[gate.row][gate.col] = 'O';
 	}
 	
-	//robots
+	// robots
 	for (Robot r : _robots) {
 		mazeDisplay[r.getRow()][r.getCol()] = r.getSymbol();
 	}
 
-	//player
+	// player
 	mazeDisplay[_player.getRow()][_player.getCol()] = _player.getSymbol();
 
 	// print
@@ -616,6 +713,7 @@ void Game::showGameDisplay() const {
 }
 
 void Game::readHumanPlay() {
+	// determines where the player will move based on their input
 	cout << setw(60) << "-------------" << endl;
     cout << setw(60) << "| Q | W | E |" << endl;
     cout << setw(60) << "-------------" << endl;
@@ -700,6 +798,7 @@ void Game::readHumanPlay() {
 }
 
 void Game::updateRobots() {
+	// determine where the robot should move next based on the shortest path to the player
 	Position mov;
 	for (Robot &r : _robots) {
         if (!r.isAlive()) {
@@ -729,7 +828,7 @@ void Game::updateRobots() {
 }
 
 void Game::updateGame() {
-    //check for robot collisions with fences
+    // checks for robot collisions with posts
 	for (Robot &r: _robots) {
 		if (!r.isAlive()) {
 			continue;
@@ -746,7 +845,7 @@ void Game::updateGame() {
 		}
 	}
 
-	//check for robot collisions with each other
+	// checks for robot collisions with each other
 	for (size_t i = 0; i < _robots.size()-1; i++) {
 		for (size_t j = i+1; j < _robots.size(); j++) {
 			Robot& r1 = _robots[i];
@@ -760,7 +859,7 @@ void Game::updateGame() {
 		}
 	}
 
-	//checks if human is still alive 
+	// checks if human wasn't killed by a post
 	for (Post &p: _maze.getPosts()) {
 		if (collide(p, _player)) {
 			_player.setAsDead();
@@ -769,6 +868,7 @@ void Game::updateGame() {
 		}
 	}
 
+	// checks if human wasn't killed by a robot
 	for (Robot &r: _robots) {
 		if (collide(r, _player)) {
 			_player.setAsDead();
@@ -777,7 +877,7 @@ void Game::updateGame() {
 		}
 	}
 
-	//updates robots positions
+	// updates robots positions
 	for (Robot &r: _robots) {
 		r.updateMovement();
 	}

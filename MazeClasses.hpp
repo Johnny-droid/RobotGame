@@ -23,10 +23,13 @@ class Menu {
     public: 
         Menu(int menuCtrl);
         string readMazeNumber();
+        string readLeaderboardNumber();
         void showTitle() const;
         void showRules() const;
         void gameOver(int x, int time, string filename);
         int selectOption() const;
+        void executeOptions() const;
+        void printRules() const;
     private:
         string strip(string str);
         string fill15(string name);
@@ -139,12 +142,12 @@ class Game {
         vector<Robot> getRobots() const;
         
     private:
-        bool collide(Robot& robot, Post& post); // check if robot collided with post (and possibly set it as dead)
+        bool collide(Robot& robot, Post& post);     // check if robot collided with post (and possibly set it as dead)
         bool collide(Robot& robot, Player& player); // check if human and robot collided (and possibly set human as dead)
-        bool collide(Post& post, Player& player); //check if human collided with post
+        bool collide(Post& post, Player& player);   // check if human collided with post
         
         
-         // 0 - continue, 1 - robots win, 2 - hero/human wins
+        // 0 - continue, 1 - robots win, 2 - hero/human wins
         // other methods, for example:
         // to check if player is trying to move to a valid place
         // to apply a valid play and check collisions
