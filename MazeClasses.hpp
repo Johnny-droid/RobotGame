@@ -26,7 +26,7 @@ class Menu {
         void showTitle() const;
         void showRules() const;
         void gameOver(int x, int time, string filename);
-    
+        int selectOption() const;
     private:
         string strip(string str);
         string fill15(string name);

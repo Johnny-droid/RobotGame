@@ -26,9 +26,29 @@ bool operator==(Position pos1, Position pos2) {
     cout << "\t\t\t| |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
     cout << "\t\t\t|  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
     cout << "\t\t\t| | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
-    cout << "\t\t\t|_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ " << endl;
-    cout << endl;
+    cout << "\t\t\t|_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ \n\n" << endl;
+	cout << "\t\t\t                               1) Rules" << endl;
+	cout << "\t\t\t                               2) Play" << endl;
+	cout << "\t\t\t                               3) Winners" << endl;
+	cout << "\t\t\t                               0) Exit\n\n"<< endl;
+
 }
+ int Menu::selectOption() const {
+	 int chosenOption;
+	 do {
+		 cout << "Enter option: ";
+		 cin >> chosenOption;
+		 if ((chosenOption != 0 && x != 1 && x != 2) || cin.fail()) {
+			 if (cin.eof()) {
+				 exit(0);
+			 }
+			 cin.clear();
+			 cin.ignore(100000, '\n');
+			 cout << "Invalid input!\n";
+		 }
+	 } while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2);
+	 return chosenOption;
+ }
 
 string Menu::readMazeNumber() {
 	int n;
