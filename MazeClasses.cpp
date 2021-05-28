@@ -35,6 +35,39 @@ string Menu::readMazeNumber() {
     string str;
     bool success = false;
 
+	cout << setw(45) << "--------------------------------------------------" << endl;
+	cout << setw(45) << "| These are the mazes you can play in. Have fun! |" << endl;
+	cout << setw(45) << "--------------------------------------------------\n" << endl;
+	cout << setw(45) << "Maze 01: The Arena  " << endl;
+	cout << setw(45) << "**************************     There are more       _\\/_   " << endl;
+	cout << setw(45) << "*                        *     robots like me      [____]  " << endl;
+	cout << setw(45) << "*     *  ++++++++  *     *     on the later mazes. |()()|" << endl;
+	cout << setw(45) << "*                        *     Choose wisely.    ___\\__/___  " << endl;
+	cout << setw(45) << "*     +            +     *     Beep.      __    |__|    |__| " << endl;
+	cout << setw(45) << "*     +     **     +     *               /__\\___/ /| [] | |" << endl;
+	cout << setw(45) << "*     +     **     +     *                __)____/ |    | | " << endl;
+	cout << setw(45) << "O     +            +     O               \\__/      |____|_|" << endl;
+	cout << setw(45) << "*                        *                         | || |_/" << endl;
+	cout << setw(45) << "*     *  ++++++++  *     *                         |_||_| " << endl;
+	cout << setw(45) << "*                        *                        _| || |_ " << endl;
+	cout << setw(45) << "***********O**O***********                       |___||___|\n" << endl;
+	cout << setw(45) << "Maze 02: The Angry Face          Maze 03: The Cat" << endl;
+	cout << setw(45) << "*****************************    ****O*O*O**************O*O*O****" << endl;
+	cout << setw(45) << "*                           *    *                              *" << endl;
+	cout << setw(45) << "*       +           +       *    *    +++                +++    *" << endl;
+	cout << setw(45) << "*         +       +         *    *    +   +            +   +    *" << endl;
+	cout << setw(45) << "*         * +   + *         *    *    +    +          +    +    *" << endl;
+	cout << setw(45) << "*         *       *         *    *                              *" << endl;
+	cout << setw(45) << "*         *       *         *    *            *    *            *" << endl;
+	cout << setw(45) << "*         *       *         *    *            *    *            *" << endl;
+	cout << setw(45) << "*             *             *    *                              *" << endl;
+	cout << setw(45) << "*                           *    *     +++              +++     *" << endl;
+	cout << setw(45) << "*          +++++++          *    *            *    *            *" << endl;
+	cout << setw(45) << "*        ++       ++        *    *             ****             *" << endl;
+	cout << setw(45) << "*                           *    *                              *" << endl;
+	cout << setw(45) << "****O****O****O****O****O****    ********************************" << endl;
+
+
     while (!success) {
         success = true;
         cout << setw(45) <<"\nPlease enter a maze number: ";
@@ -47,7 +80,7 @@ string Menu::readMazeNumber() {
             success = false;
         }
         else if (n > 60 && n < 100) {
-            cout << "Actually, this game has only 60 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
+            cout << "Actually, this game has only 3 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
             success = false;
         }
     }
@@ -659,6 +692,7 @@ void Game::updateRobots() {
             mov = {-1, -1};
         }
 		r.setMovement(mov);
+		r.updateMovement();   //not sure
     }
 }
 

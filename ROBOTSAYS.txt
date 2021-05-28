@@ -32,7 +32,7 @@
           *                           *    *                              *
           ****O****O****O****O****O****    ********************************
 
-          Please enter a maze number. 
+          Please enter a maze number: 
  
  
           
