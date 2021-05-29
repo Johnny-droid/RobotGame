@@ -5,12 +5,12 @@ Group Members:
     - António Maria Gameiro Campos Sampaio de Matos
 
 Program Development State:
-    - In progress
+    - Almost Complete
 
 Main Difficulties:
     - none (so far)
 
 Extra:
-    - 60 levels developed
+    - 3 levels developed
     
     
