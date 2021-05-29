@@ -27,6 +27,7 @@ void printLeaderBoard(string winnersFile);
 string readMazeNumber();
 string readLeaderboardNumber();
 void gameOver(int x, int time, string filename);
+bool replay();
 
 // auxiliary functions
 string strip(string str);
@@ -34,28 +35,6 @@ string fill15(string name);
 string readName();
 void bubbleSort(vector<PlayerTable> &v);
 
-/*
-class Menu {
-    public: 
-        Menu(int menuCtrl);
-        string readMazeNumber();
-        string readLeaderboardNumber();
-        void showTitle() const;
-        void showRules() const;
-        void gameOver(int x, int time, string filename);
-        int selectOption() const;
-        void executeOptions() const;
-        void printRules() const;
-    private:
-        string strip(string str);
-        string fill15(string name);
-        string readName();
-        void bubbleSort(vector<PlayerTable> &v);
-
-    private:
-        int _menuCtrl;
-};
-*/
 
 class Player {
     public:

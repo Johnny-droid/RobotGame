@@ -73,16 +73,25 @@ void printLeaderBoard(string winnersFile) {
 	// prints the scores
 	fstream file;
 	string line;
-	file.open(winnersFile, ios::in);                              //not sure se est� direito a dar print
+	file.open(winnersFile, ios::in);    
+	getline(file, line);  //read the first two lines
+	getline(file, line);
 	cout << endl;
-	while ( getline(file, line) ) {
-		cout << line << endl;
-		if (file.eof()) {
-			break;
-		}
-	}
+	if (file.eof()) {
+		cout << "Empty list" << endl;
+	} else {
+		cout << setw(70) << "Player          - Time" << endl;
+		cout << setw(70) << "----------------------" << endl;
+		while ( getline(file, line) ) {
+			cout << setw(70) << line << endl;
+			if (file.eof()) {
+				break;
+			}
+		};
+	};
 	cout << endl;
 	file.close();
+	cout << "Press any key to continue " << endl;
 	_getch();
 }
 
@@ -92,37 +101,37 @@ string readMazeNumber() {
     string str;
     bool success = false;
 
-	cout << setw(45) << "--------------------------------------------------" << endl;
-	cout << setw(45) << "| These are the mazes you can play in. Have fun! |" << endl;
-	cout << setw(45) << "--------------------------------------------------\n" << endl;
-	cout << setw(45) << "Maze 01: The Arena  " << endl;
-	cout << setw(45) << "**************************     There are more       _\\/_   " << endl;
-	cout << setw(45) << "*                        *     robots like me      [____]  " << endl;
-	cout << setw(45) << "*     *  ++++++++  *     *     on the later mazes. |()()|" << endl;
-	cout << setw(45) << "*                        *     Choose wisely.    ___\\__/___  " << endl;
-	cout << setw(45) << "*     +            +     *     Beep.      __    |__|    |__| " << endl;
-	cout << setw(45) << "*     +     **     +     *               /__\\___/ /| [] | |" << endl;
-	cout << setw(45) << "*     +     **     +     *                __)____/ |    | | " << endl;
-	cout << setw(45) << "O     +            +     O               \\__/      |____|_|" << endl;
-	cout << setw(45) << "*                        *                         | || |_/" << endl;
-	cout << setw(45) << "*     *  ++++++++  *     *                         |_||_| " << endl;
-	cout << setw(45) << "*                        *                        _| || |_ " << endl;
-	cout << setw(45) << "***********O**O***********                       |___||___|\n" << endl;
-	cout << setw(45) << "Maze 02: The Angry Face          Maze 03: The Cat" << endl;
-	cout << setw(45) << "*****************************    ****O*O*O**************O*O*O****" << endl;
-	cout << setw(45) << "*                           *    *                              *" << endl;
-	cout << setw(45) << "*       +           +       *    *    +++                +++    *" << endl;
-	cout << setw(45) << "*         +       +         *    *    +   +            +   +    *" << endl;
-	cout << setw(45) << "*         * +   + *         *    *    +    +          +    +    *" << endl;
-	cout << setw(45) << "*         *       *         *    *                              *" << endl;
-	cout << setw(45) << "*         *       *         *    *            *    *            *" << endl;
-	cout << setw(45) << "*         *       *         *    *            *    *            *" << endl;
-	cout << setw(45) << "*             *             *    *                              *" << endl;
-	cout << setw(45) << "*                           *    *     +++              +++     *" << endl;
-	cout << setw(45) << "*          +++++++          *    *            *    *            *" << endl;
-	cout << setw(45) << "*        ++       ++        *    *             ****             *" << endl;
-	cout << setw(45) << "*                           *    *                              *" << endl;
-	cout << setw(45) << "****O****O****O****O****O****    ********************************" << endl;
+	cout << "                    --------------------------------------------------               " << endl;
+	cout << "                    | These are the mazes you can play in. Have fun! |               " << endl;
+	cout << "                    --------------------------------------------------               " << endl;
+	cout << "                    Maze 01: The Arena                                               " << endl;
+	cout << "                    **************************     There are more       _\\/_        " << endl;
+	cout << "                    *                        *     robots like me      [____]        " << endl;
+	cout << "                    *     *  ++++++++  *     *     on the later mazes. |()()|        " << endl;
+	cout << "                    *                        *     Choose wisely.    ___\\__/___     " << endl;
+	cout << "                    *     +            +     *     Beep.      __    |__|    |__|     " << endl;
+	cout << "                    *     +     **     +     *               /__\\___/ /| [] | |     " << endl;
+	cout << "                    *     +     **     +     *                __)____/ |    | |      " << endl;
+	cout << "                    O     +            +     O               \\__/     |____|_|      " << endl;
+	cout << "                    *                        *                         | || |_/      " << endl;
+	cout << "                    *     *  ++++++++  *     *                         |_||_|        " << endl;
+	cout << "                    *                        *                        _| || |_       " << endl;
+	cout << "                    ***********O**O***********                       |___||___|      " << endl;
+	cout << "                    Maze 02: The Angry Face          Maze 03: The Cat                " << endl;
+	cout << "                    *****************************    ****O*O*O**************O*O*O****" << endl;
+	cout << "                    *                           *    *                              *" << endl;
+	cout << "                    *       +           +       *    *    +++                +++    *" << endl;
+	cout << "                    *         +       +         *    *    +   +            +   +    *" << endl;
+	cout << "                    *         * +   + *         *    *    +    +          +    +    *" << endl;
+	cout << "                    *         *       *         *    *                              *" << endl;
+	cout << "                    *         *       *         *    *            *    *            *" << endl;
+	cout << "                    *         *       *         *    *            *    *            *" << endl;
+	cout << "                    *             *             *    *                              *" << endl;
+	cout << "                    *                           *    *     +++              +++     *" << endl;
+	cout << "                    *          +++++++          *    *            *    *            *" << endl;
+	cout << "                    *        ++       ++        *    *             ****             *" << endl;
+	cout << "                    *                           *    *                              *" << endl;
+	cout << "                    ****O****O****O****O****O****    ********************************" << endl;
 
 
     while (!success) {
@@ -157,8 +166,8 @@ string readLeaderboardNumber() {
 	bool success = false;
 	int n;
 	string str;
+	cout << "Welome to the leaderboards!" << endl;
 	while (!success) {
-		cout << "Welome to the leaderboards!" << endl;
 		cout << "Please select a maze number to see its winners: ";
 		cin >> n;
 		if (n < 0 || n > 99 || cin.fail()) {
@@ -284,12 +293,35 @@ void gameOver(int x, int time, string filename) {
             const char* filename_c = filename.c_str();
             remove(filename_c);
             rename("temp.txt", filename_c);
-            cout << "\nI hope you have enjoyed our game!";
+            cout << "\nI hope you have enjoyed our game!" << endl;
         }
     } else {
         cout << "Game Over!" << endl;
         cout << "You Lost" << endl;
     }
+}
+
+bool replay() {
+	int number;
+    do {
+        cout << "\n\n0) Exit" << endl; 
+		cout << "1)Play Again" << endl; 
+		cout << "\nEnter option: ";
+        cin >> number;
+        if ( (number != 0 && number != 1)  || cin.fail()) {
+            if (cin.eof()) {
+                exit(0);
+            }
+            cin.clear();
+            cin.ignore(100000, '\n');
+            cout << "Invalid input!\n";
+        }
+    } while (number != 0 && number != 1);
+
+	if (number == 1) {
+		return true;
+	}
+	return false;
 }
 
 // Player
@@ -685,6 +717,7 @@ void Game::showGameDisplay() const {
 
 	// print
 	for (int i = 0; i < _maze.getnumRows(); i++) {
+		cout << "                        ";
 		for (int j = 0; j < _maze.getnumCols(); j++) {
 			cout << mazeDisplay[i][j] << ' ';
 		}
