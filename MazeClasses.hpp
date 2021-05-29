@@ -18,7 +18,23 @@ struct PlayerTable {
     string name;
     int time;
 };
- 
+
+void showTitle();
+int selectOption();
+void executeOptions();
+void printRules();
+void printLeaderBoard(string winnersFile);
+string readMazeNumber();
+string readLeaderboardNumber();
+void gameOver(int x, int time, string filename);
+
+// auxiliary functions
+string strip(string str);
+string fill15(string name);
+string readName();
+void bubbleSort(vector<PlayerTable> &v);
+
+/*
 class Menu {
     public: 
         Menu(int menuCtrl);
@@ -39,6 +55,7 @@ class Menu {
     private:
         int _menuCtrl;
 };
+*/
 
 class Player {
     public:
@@ -132,7 +149,6 @@ class Maze {
 class Game {
     public:
         Game(const string & filename);
-        bool play(); // implements the game loop; returns true if player wins, false otherwise
         bool isValid();
         void readHumanPlay();
         void updateRobots();
@@ -146,7 +162,6 @@ class Game {
         bool collide(Robot& robot, Player& player); // check if human and robot collided (and possibly set human as dead)
         bool collide(Post& post, Player& player);   // check if human collided with post
         
-        
         // 0 - continue, 1 - robots win, 2 - hero/human wins
         // other methods, for example:
         // to check if player is trying to move to a valid place
@@ -157,5 +172,5 @@ class Game {
         Maze _maze;
         Player _player;
         vector<Robot> _robots;
-        //other attributes
+        bool _valid;
 };

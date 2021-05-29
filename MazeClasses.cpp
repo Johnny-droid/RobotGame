@@ -19,7 +19,7 @@ bool operator==(Position pos1, Position pos2) {
 
 // Menu
 
- void Menu::showTitle() const {
+ void showTitle() {
 	// print the title screen
 	cout << "\n\n";
     cout << "\t\t\t _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
@@ -32,85 +32,61 @@ bool operator==(Position pos1, Position pos2) {
 	cout << "\t\t\t                               2) Play" << endl;
 	cout << "\t\t\t                               3) Winners" << endl;
 	cout << "\t\t\t                               0) Exit\n\n"<< endl;
+};
 
+int selectOption() {
+	// gets the option number
+	int chosenOption;
+	do {
+		cout << "Enter option: ";
+		cin >> chosenOption;
+		if ((chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3) || cin.fail()) {
+			if (cin.eof()) {
+				exit(0);
+			}
+			cin.clear();
+			cin.ignore(100000, '\n');
+			cout << "Invalid input!\n";
+		}
+	} while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3);
+	return chosenOption;
 }
- int Menu::selectOption() const {
-	 // gets the option number
-	 int chosenOption;
-	 do {
-		 cout << "Enter option: ";
-		 cin >> chosenOption;
-		 if ((chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3 &&) || cin.fail()) {
-			 if (cin.eof()) {
-				 exit(0);
-			 }
-			 cin.clear();
-			 cin.ignore(100000, '\n');
-			 cout << "Invalid input!\n";
-		 }
-	 } while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3);
-	 return chosenOption;
- }
 
- void Menu::executeOptions() const {
-	 // executes whatever the option number refers to
-	 do {
-		 menu_ctrl = selectOption() ; // returns 0 Exit, 1 Rules, 2 Play, 3 Winners
-		 if (menu_ctrl == 0) {
-			 return 0;
-		 }
-		 else if (menu_ctrl == 1) {
-			 printRules();
-		 }
-		 else if (menu_ctrl == 2) {
-			 maze_number = readMazeNumber();
-			 if (maze_number == "0") {
-				 menu_ctrl = 0;
-			 }
-			 else {
-				 maze = readFile("MAZE_" + maze_number + ".TXT");
-				 while (maze == error) {
-					 maze_number = readMazeNumber(false);
-					 if (maze_number == "0") {
-						 menu_ctrl = 0;
-						 break;
-					 }
-					 maze = readFile("MAZE_" + maze_number + ".TXT");
-				 }
-			 }
-		 }
-		 else if (menu_ctrl == 3) {
-			 string leaderboard;
-			 string leaderboard_number = readLeaderboardNumber();
-			 if (leaderboard_number == "0") {
-				 menu_ctrl = 0;
-			 }
-			 else {
-				 leaderboard = readFile("MAZE_" + leaderboard_number + "_WINNERS.TXT");                  //falta imprimir
-			 }
-		 }
-	 } while (menu_ctrl != 2);
+void printRules() {
+	// prints the rules
+	fstream rulesFile;
+	string line;
+	rulesFile.open("RULES.TXT", ios::in);                              //not sure se estï¿½ direito a dar print
+	cout << endl;
+	while (getline(rulesFile, line)) {
+	    cout << line << endl;
+		if (rulesFile.eof()) {
+			break;
+		}
+	}
+	cout << endl;
+	rulesFile.close();
+	_getch();
+};
 
- }
+void printLeaderBoard(string winnersFile) {
+	// prints the scores
+	fstream file;
+	string line;
+	file.open(winnersFile, ios::in);                              //not sure se estï¿½ direito a dar print
+	cout << endl;
+	while ( getline(file, line) ) {
+		cout << line << endl;
+		if (file.eof()) {
+			break;
+		}
+	}
+	cout << endl;
+	file.close();
+	_getch();
+}
 
- void Menu::printRules() const {
-	 // prints the rules
-	 cout << '\n';
-	 fstream rulesFile;
-	 rulesFile.open("RULES.TXT", ios::in);                              //not sure se está direito a dar print
-	 char c;
-	 while true {
-		 rulesFile >> c;
-		 if (rulesFile.eof()) {
-			 break;
-		 }
-	     cout << c;
-	 }
-	 rulesFile.close;
-	 _getch();
- }
-
-string Menu::readMazeNumber() {
+string readMazeNumber() {
 	// gets the maze number in a string
 	int n;
     string str;
@@ -176,9 +152,9 @@ string Menu::readMazeNumber() {
     return to_string(n);
 }
 
-string Menu::readLeaderboardNumber() {
+string readLeaderboardNumber() {
     // gets the leaderboard number in a string
-	bool sucess = false;
+	bool success = false;
 	int n;
 	string str;
 	while (!success) {
@@ -195,6 +171,8 @@ string Menu::readLeaderboardNumber() {
 		else if (n > 3 && n < 100) {
 			cout << "Actually, this game has only 3 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
 			success = false;
+		} else {
+			success = true;
 		}
 	}
 	if (n == 0) {
@@ -208,14 +186,14 @@ string Menu::readLeaderboardNumber() {
 	return to_string(n);
 }
 
-string Menu::strip(string str) {
+string strip(string str) {
     // removes the leading and trailing whitespaces of a string
     size_t start = str.find_first_not_of(' ');
     size_t end = str.find_last_not_of(' ');
     return str.substr(start, end-start+1);
 };
 
-string Menu::fill15(string name) {
+string fill15(string name) {
 	// puts blank spaces at the end of the name until it is 15 characters
     while (name.length() < 15) {
         name += ' ';
@@ -223,7 +201,7 @@ string Menu::fill15(string name) {
     return name; 
 };
 
-string Menu::readName() {
+string readName() {
     // reads the name of the player, but it can only have 15 characters!!!
     // if smaller, fills the name with whitespace
     string name;
@@ -243,7 +221,7 @@ string Menu::readName() {
     return fill15(name);  
 }
 
-void Menu::bubbleSort(vector<PlayerTable> &v) {
+void bubbleSort(vector<PlayerTable> &v) {
     // sorting function to sort the times of the winners
     PlayerTable aux;
     bool change = true;
@@ -260,7 +238,7 @@ void Menu::bubbleSort(vector<PlayerTable> &v) {
     }
 }
 
-void Menu::gameOver(int x, int time, string filename) {
+void gameOver(int x, int time, string filename) {
     // check if it won, and if so
     // ask the name
     // sort the winning times
@@ -599,8 +577,10 @@ Game::Game(const string & filename) {
 	ifstream file;
     file.open(filename);
     if (!file.is_open()) {
+		_valid = false;
         cout << "Maze not found!" << endl;
     } else {
+		_valid = true;
 		vector<Post> posts = {};
 		vector<Robot> robots = {};
 		vector<Position> gates = {};
@@ -710,6 +690,10 @@ void Game::showGameDisplay() const {
 		}
 		cout << endl;
 	}
+}
+
+bool Game::isValid() {
+	return _valid;
 }
 
 void Game::readHumanPlay() {
