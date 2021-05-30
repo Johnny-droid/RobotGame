@@ -115,9 +115,9 @@ class Maze {
         int getnumRows() const;
         int getnumCols() const;
         vector<Position> getGates() const;
+        vector<Post> &getPostsByRef();
         vector<Post> getPosts() const;
         void show() const;
-        // other methods
     private:
         int _numRows, _numCols;
         vector<Position> _gates;

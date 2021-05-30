@@ -573,6 +573,10 @@ vector<Position> Maze::getGates() const {
 	return _gates;
 }
 
+vector<Post> &Maze::getPostsByRef() {
+	return _posts;
+}
+
 vector<Post> Maze::getPosts() const {
 	return _posts;
 }
@@ -803,7 +807,7 @@ void Game::readHumanPlay() {
 		}
 
 		for (Post p: _maze.getPosts()) {
-			if (!p.isElectrified() && collide(p, _player)) {
+			if ((!p.isElectrified() && collide(p, _player) && !p.isDestroyed())) {
 				validPos = false;
 				cout << "\t\tYou can't move into a post!!! Choose another direction!" << endl;
 				break;
@@ -854,11 +858,13 @@ void Game::updateGame() {
 		if (!r.isAlive()) {
 			continue;
 		}
-		for (Post p: _maze.getPosts()) {
+		vector<Post> &posts = _maze.getPostsByRef();
+		for (Post &p: posts) {
 			if (r.getPosition() + r.getMovement() == p.getPosition()) {
 				r.setAsDead();
 				if (!p.isElectrified()) {
 					r.updateMovement();
+					p.setDestroyed();
 				} else {
 					r.setMovementZero();
 				}
