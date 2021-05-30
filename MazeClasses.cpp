@@ -57,7 +57,7 @@ void printRules() {
 	fstream rulesFile;
 	string line;
 	rulesFile.open("RULES.TXT", ios::in);                              //not sure se est� direito a dar print
-	cout << endl;
+	cout << "\n\n";
 	while (getline(rulesFile, line)) {
 	    cout << line << endl;
 		if (rulesFile.eof()) {
@@ -100,7 +100,7 @@ string readMazeNumber() {
 	int n;
     string str;
     bool success = false;
-
+	cout << "\n\n";
 	cout << "                    --------------------------------------------------               " << endl;
 	cout << "                    | These are the mazes you can play in. Have fun! |               " << endl;
 	cout << "                    --------------------------------------------------               " << endl;
@@ -142,6 +142,8 @@ string readMazeNumber() {
             if (cin.eof()) {
                 exit(0);
             }
+			cin.clear();
+            cin.ignore(100000, '\n');
             cout << "\t\tThis is an invalid maze number!" << endl;
 			cout << "\t\tPlease bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
             success = false;
@@ -168,7 +170,7 @@ string readLeaderboardNumber() {
 	bool success = false;
 	int n;
 	string str;
-	cout << "\n\t\ttWelcome to the leaderboards!" << endl;
+	cout << "\n\t\tWelcome to the leaderboards!" << endl;
 	while (!success) {
 		cout << "\t\tPlease select a maze number to see its winners: ";
 		cin >> n;
@@ -176,11 +178,15 @@ string readLeaderboardNumber() {
 			if (cin.eof()) {
 				exit(0);
 			}
+			cin.clear();
+            cin.ignore(100000, '\n');
 			cout << "\t\tThis is an invalid maze number!" << endl;
 			cout << "\t\tPlease bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
 			success = false;
 		}
 		else if (n > 3 && n < 100) {
+			cin.clear();
+            cin.ignore(100000, '\n');
 			cout << "\t\tActually, this game has only 3 mazes so please choose a smaller number." << endl;
 			cout << "\t\tPfft, lazy developers.\n" << endl;
 			success = false;
@@ -220,7 +226,7 @@ string readName() {
     string name;
     do {
         cout << "\t\tEnter your name: ";
-        cin >> name;
+        getline(cin, name);
         if ( name.length() > 15 || cin.fail()) {
             if (cin.eof()) {
                 exit(0);
@@ -263,14 +269,14 @@ void gameOver(int x, int time, string filename) {
         if (!file.is_open()) {
             cout << "\t\tFile not found" << endl;
         } else {
-            vector<PlayerTable> v = {};
+            vector<PlayerTable> players = {};
             PlayerTable p;
             string line;
             size_t pos;
 
             p.name = readName();
             p.time = time;
-            v.push_back(p);
+            players.push_back(p);
 
             ofstream temp;
             temp.open("temp.txt");
@@ -283,15 +289,16 @@ void gameOver(int x, int time, string filename) {
                 pos = line.find('-') + 1;
                 p.time = stoi(strip(line.substr(pos)));
                 p.name = fill15(strip(line.substr(0, 15)));
-                v.push_back(p);
+                players.push_back(p);
             }
-            bubbleSort(v);
+            bubbleSort(players);
             
-            cout << "\n\t\tNew times: " << endl;
-            for(int i = 0; i < v.size(); i++) {
-                temp << v[i].name << "  - " << v[i].time << endl;
-                cout << v[i].name << "  - " << v[i].time << endl;
+            cout << "\n\n\t\tNew times: " << endl;
+			for(PlayerTable p : players) {
+                temp << p.name << "  - " << p.time << endl;
             }
+
+            printLeaderBoard("temp.txt");
             temp.close();
             file.close();
             const char* filename_c = filename.c_str();
@@ -306,6 +313,7 @@ void gameOver(int x, int time, string filename) {
 }
 
 bool replay() {
+	// Asks the player if he wants to continue to play or exit the game
 	int number;
     do {
         cout << "\n\n                                              0) Exit" << endl; 
@@ -327,6 +335,13 @@ bool replay() {
 	}
 	return false;
 }
+
+
+
+
+
+
+
 
 // Player
 
@@ -401,6 +416,13 @@ void Player::updateMovement() {
 	_position = {_position.row + _movement.row, _position.col + _movement.col};
 	_movement = {0, 0};
 }
+
+
+
+
+
+
+
 
 // Robot
 
@@ -489,6 +511,14 @@ void Robot::show() const {
 }
 
 
+
+
+
+
+
+
+
+
 // Post
 
 Post::Post(int row, int col, char type, bool destroyed /*=false*/) {
@@ -540,6 +570,14 @@ void Post::show() const {
 	cout << "Symbol: " << getSymbol() << endl;
 	cout << "Electrified: " << isElectrified() << endl;
 }
+
+
+
+
+
+
+
+
 
 // Maze
 
@@ -610,6 +648,16 @@ void Maze::show() const {
 		cout << endl;
 	}
 };
+
+
+
+
+
+
+
+
+
+
 
 // Game
 
@@ -696,7 +744,7 @@ bool Game::collide(Post& post, Player& player) {
 void Game::showGameDisplay() const {
 	vector<vector<char>> mazeDisplay = {};
 	vector<char> v;
-	
+	cout << "\n\n";
 	for (size_t i = 0; i < _maze.getnumRows(); i++) {
 		v = {};
 		for (size_t j = 0; j < _maze.getnumCols(); j++) {
@@ -929,6 +977,3 @@ int Game::checkGameOver() {
 	return 0;
 } 
 
-vector<Robot> Game::getRobots() const {
-	return _robots;
-}

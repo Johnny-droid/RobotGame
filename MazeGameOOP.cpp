@@ -15,23 +15,23 @@ int main() {
 
         do {
             menu_ctrl = selectOption() ; // returns 0 Exit, 1 Rules, 2 Play, 3 Winners
-            if (menu_ctrl == 0) {
-                exit;
+            if (menu_ctrl == 0) {   // exit
+                return 0;  // exits the game
             }
-            else if (menu_ctrl == 1) {
-                printRules();
-                showTitle();
+            else if (menu_ctrl == 1) {   //rules
+                printRules();  //prints the rules
+                showTitle(); 
             }
-            else if (menu_ctrl == 2) {
-                maze_number = readMazeNumber();
-                if (maze_number == "0") {
+            else if (menu_ctrl == 2) {    //play
+                maze_number = readMazeNumber();  
+                if (maze_number == "0") {   // goes back to the main menu
                     menu_ctrl = 0;
                     showTitle();
                 }
                 else {
-                    Game TestGame("MAZE_" + maze_number + ".TXT");
-                    while (!TestGame.isValid()) {
-                        maze_number = readMazeNumber(); //?????
+                    Game TestGame("MAZE_" + maze_number + ".TXT");   // creates the game
+                    while (!TestGame.isValid()) {                    // builds a test game to see if it's valid. Otherwise it keeps 
+                        maze_number = readMazeNumber();              // asking for the maze number again
                         if (maze_number == "0") {
                             menu_ctrl = 0;
                             showTitle();
@@ -41,47 +41,34 @@ int main() {
                     }
                 }
             }
-            else if (menu_ctrl == 3) {
-                string leaderboard_number = readLeaderboardNumber();
-                if (leaderboard_number == "0") {
+            else if (menu_ctrl == 3) {  //winners
+                string leaderboard_number = readLeaderboardNumber();  // return the number in the same format as readMazeNumber()  (ex: 01  or 24)
+                if (leaderboard_number == "0") {   // goes back to the main menu
                     menu_ctrl = 0;
                     showTitle();
                 }
                 else {
-                    printLeaderBoard("MAZE_" + leaderboard_number + "_WINNERS.TXT");  
+                    printLeaderBoard("MAZE_" + leaderboard_number + "_WINNERS.TXT");  // shows the leaderboard of the maze of the corresponding number
                     showTitle();
                 }
             }
         } while (menu_ctrl != 2);
         
-        Game MazeGame("MAZE_" + maze_number + ".TXT");
-        auto begin = chrono::steady_clock::now();
-        while (MazeGame.checkGameOver() == 0) {
-            MazeGame.showGameDisplay();
+        Game MazeGame("MAZE_" + maze_number + ".TXT");  // builds the game
+        auto begin = chrono::steady_clock::now();   // starts counting the time. When the cycle ends, the game has finished
+        while (MazeGame.checkGameOver() == 0) {   // 0 -> continue,    1 -> robots win,   2 -> hero/human wins
+            MazeGame.showGameDisplay();          
             MazeGame.readHumanPlay();
             MazeGame.updateRobots();
             MazeGame.updateGame();
         }
 
-        auto end = chrono::steady_clock::now();
-        auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
-        MazeGame.showGameDisplay();
-        gameOver(MazeGame.checkGameOver(), elapsed.count(), "MAZE_" + maze_number + "_WINNERS.TXT");
-        replay_ctrl = replay(); 
+        auto end = chrono::steady_clock::now();  // stops counting the time
+        auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);   // calculates the time (in seconds) 
+        MazeGame.showGameDisplay();  
+        gameOver(MazeGame.checkGameOver(), elapsed.count(), "MAZE_" + maze_number + "_WINNERS.TXT");  // shows and records your time if you won. 
+        replay_ctrl = replay();   // asks if you want to exit the game or play once again
 
     } while(replay_ctrl);
 }
 
-//menu 3) Winners, if empty say empty list, if not ask for maze number then show the list
-//eletrical posts +, you can go into them but you stay where you were and die
-//non eletrical posts * or robots R or r, you can't run into them
-//robots become r when they go to R or *, but stay dead in their place if they go to +
-//if H reaches O, then O becomes H and game ends
-//rules in RULES.txt
-// 
-//===========CLASSES======================================================
-//Post
-//Maze
-//Player
-//Robot
-//Game
