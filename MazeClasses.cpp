@@ -22,23 +22,23 @@ bool operator==(Position pos1, Position pos2) {
  void showTitle() {
 	// print the title screen
 	cout << "\n\n";
-    cout << "\t\t\t _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
-    cout << "\t\t\t|  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
-    cout << "\t\t\t| |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
-    cout << "\t\t\t|  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
-    cout << "\t\t\t| | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
-    cout << "\t\t\t|_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ \n\n" << endl;
-	cout << "\t\t\t                               1) Rules" << endl;
-	cout << "\t\t\t                               2) Play" << endl;
-	cout << "\t\t\t                               3) Winners" << endl;
-	cout << "\t\t\t                               0) Exit\n\n"<< endl;
+    cout << "                 _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
+    cout << "                |  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
+    cout << "                | |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
+    cout << "                |  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
+    cout << "                | | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
+    cout << "                |_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ \n\n" << endl;
+	cout << "                                              1) Rules" << endl;
+	cout << "                                              2) Play" << endl;
+	cout << "                                              3) Winners" << endl;
+	cout << "                                              0) Exit\n\n"<< endl;
 };
 
 int selectOption() {
 	// gets the option number
 	int chosenOption;
 	do {
-		cout << "Enter option: ";
+		cout << "                Enter option: ";
 		cin >> chosenOption;
 		if ((chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3) || cin.fail()) {
 			if (cin.eof()) {
@@ -46,7 +46,7 @@ int selectOption() {
 			}
 			cin.clear();
 			cin.ignore(100000, '\n');
-			cout << "Invalid input!\n";
+			cout << "                Invalid input!\n";
 		}
 	} while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3);
 	return chosenOption;
@@ -78,12 +78,12 @@ void printLeaderBoard(string winnersFile) {
 	getline(file, line);
 	cout << endl;
 	if (file.eof()) {
-		cout << "Empty list" << endl;
+		cout << "                Empty list" << endl;
 	} else {
-		cout << setw(70) << "Player          - Time" << endl;
-		cout << setw(70) << "----------------------" << endl;
+		cout << "                                       Player          - Time" << endl;
+		cout << "                                       ----------------------" << endl;
 		while ( getline(file, line) ) {
-			cout << setw(70) << line << endl;
+			cout << "                                       " + line << endl;
 			if (file.eof()) {
 				break;
 			}
@@ -91,7 +91,7 @@ void printLeaderBoard(string winnersFile) {
 	};
 	cout << endl;
 	file.close();
-	cout << "Press any key to continue " << endl;
+	cout << "                Press any key to continue " << endl;
 	_getch();
 }
 
@@ -136,17 +136,19 @@ string readMazeNumber() {
 
     while (!success) {
         success = true;
-        cout << setw(45) <<"\nPlease enter a maze number: ";
+        cout << "\n                Please enter a maze number: ";
         cin >> n;
         if ( n < 0 || n > 99 || cin.fail()) {
             if (cin.eof()) {
                 exit(0);
             }
-            cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
+            cout << "                This is an invalid maze number!" << endl;
+			cout << "                Please bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
             success = false;
         }
         else if (n > 3 && n < 100) {
-            cout << "Actually, this game has only 3 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
+            cout << "                Actually, this game has only 3 mazes so please choose a smaller number." << endl;
+			cout << "                Pfft, lazy developers.\n" << endl;
             success = false;
         }
     }
@@ -166,19 +168,21 @@ string readLeaderboardNumber() {
 	bool success = false;
 	int n;
 	string str;
-	cout << "Welome to the leaderboards!" << endl;
+	cout << "\n                Welcome to the leaderboards!" << endl;
 	while (!success) {
-		cout << "Please select a maze number to see its winners: ";
+		cout << "                Please select a maze number to see its winners: ";
 		cin >> n;
 		if (n < 0 || n > 99 || cin.fail()) {
 			if (cin.eof()) {
 				exit(0);
 			}
-			cout << "This is an invalid maze number!\nPlease bear in mind you can't use negative numbers nor one with more than two digits.\n";
+			cout << "                This is an invalid maze number!" << endl;
+			cout << "                Please bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
 			success = false;
 		}
 		else if (n > 3 && n < 100) {
-			cout << "Actually, this game has only 3 mazes so please choose a smaller number.\nPfft, lazy developers.\n";
+			cout << "                Actually, this game has only 3 mazes so please choose a smaller number." << endl;
+			cout << "                Pfft, lazy developers.\n" << endl;
 			success = false;
 		} else {
 			success = true;
@@ -215,7 +219,7 @@ string readName() {
     // if smaller, fills the name with whitespace
     string name;
     do {
-        cout << "Enter your name: ";
+        cout << "                Enter your name: ";
         cin >> name;
         if ( name.length() > 15 || cin.fail()) {
             if (cin.eof()) {
@@ -223,7 +227,7 @@ string readName() {
             }
             cin.clear();
             cin.ignore(100000, '\n');
-            cout << "Invalid input!\n";
+            cout << "                Invalid input!\n";
         }
     } while (name.length() > 15);
 
@@ -252,12 +256,12 @@ void gameOver(int x, int time, string filename) {
     // ask the name
     // sort the winning times
     if (x == 2) {
-        cout << "Congratulations, you won!!!" << endl;
+        cout << "                Congratulations, you won!!!" << endl;
 
         ifstream file;
         file.open(filename);
         if (!file.is_open()) {
-            cout << "File not found" << endl;
+            cout << "                File not found" << endl;
         } else {
             vector<PlayerTable> v = {};
             PlayerTable p;
@@ -283,7 +287,7 @@ void gameOver(int x, int time, string filename) {
             }
             bubbleSort(v);
             
-            cout << "\nNew times: " << endl;
+            cout << "\n                New times: " << endl;
             for(int i = 0; i < v.size(); i++) {
                 temp << v[i].name << "  - " << v[i].time << endl;
                 cout << v[i].name << "  - " << v[i].time << endl;
@@ -293,20 +297,20 @@ void gameOver(int x, int time, string filename) {
             const char* filename_c = filename.c_str();
             remove(filename_c);
             rename("temp.txt", filename_c);
-            cout << "\nI hope you have enjoyed our game!" << endl;
+            cout << "\n                I hope you have enjoyed our game!" << endl;
         }
     } else {
-        cout << "Game Over!" << endl;
-        cout << "You Lost" << endl;
+        cout << "                Game Over!" << endl;
+        cout << "                You Lost" << endl;
     }
 }
 
 bool replay() {
 	int number;
     do {
-        cout << "\n\n0) Exit" << endl; 
-		cout << "1)Play Again" << endl; 
-		cout << "\nEnter option: ";
+        cout << "\n\n                                              0) Exit" << endl; 
+		cout << "                                              1)Play Again" << endl; 
+		cout << "\n                Enter option: ";
         cin >> number;
         if ( (number != 0 && number != 1)  || cin.fail()) {
             if (cin.eof()) {
@@ -314,7 +318,7 @@ bool replay() {
             }
             cin.clear();
             cin.ignore(100000, '\n');
-            cout << "Invalid input!\n";
+            cout << "                Invalid input!\n";
         }
     } while (number != 0 && number != 1);
 
@@ -610,7 +614,7 @@ Game::Game(const string & filename) {
     file.open(filename);
     if (!file.is_open()) {
 		_valid = false;
-        cout << "Maze not found!" << endl;
+        cout << "                Maze not found!" << endl;
     } else {
 		_valid = true;
 		vector<Post> posts = {};
@@ -731,20 +735,20 @@ bool Game::isValid() {
 
 void Game::readHumanPlay() {
 	// determines where the player will move based on their input
-	cout << setw(60) << "-------------" << endl;
-    cout << setw(60) << "| Q | W | E |" << endl;
-    cout << setw(60) << "-------------" << endl;
-    cout << setw(60) << "| A | S | D |" << endl;
-    cout << setw(60) << "-------------" << endl;
-    cout << setw(60) << "| Z | X | C |" << endl;
-    cout << setw(60) << "-------------" << endl;
+	cout << setw(56) << "-------------" << endl;
+    cout << setw(56) << "| Q | W | E |" << endl;
+    cout << setw(56) << "-------------" << endl;
+    cout << setw(56) << "| A | S | D |" << endl;
+    cout << setw(56) << "-------------" << endl;
+    cout << setw(56) << "| Z | X | C |" << endl;
+    cout << setw(56) << "-------------" << endl;
 
     char ch;
 	bool validPos;
 	Position mov;
     do {
         do {
-            cout << "Enter key: ";
+            cout << "                Enter key: ";
             cin >> ch;
             cin.ignore(10000, '\n');
             ch = toupper(ch);
@@ -754,7 +758,7 @@ void Game::readHumanPlay() {
                 }
                 cin.clear();
                 cin.ignore(100000, '\n');
-                cout << "Invalid input!\n";
+                cout << "                Invalid input!\n";
             }
             
         } while (ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' );
@@ -793,7 +797,7 @@ void Game::readHumanPlay() {
 		for (Robot r: _robots) {
 			if (!r.isAlive() && collide(r, _player)) {
 				validPos = false;
-				cout << "You can't move into a destroyed robot!!! Choose another direction!" << endl;
+				cout << "                You can't move into a destroyed robot!!! Choose another direction!" << endl;
 				break;
 			}
 		}
@@ -801,7 +805,7 @@ void Game::readHumanPlay() {
 		for (Post p: _maze.getPosts()) {
 			if (!p.isElectrified() && collide(p, _player)) {
 				validPos = false;
-				cout << "You can't move into a post!!! Choose another direction!" << endl;
+				cout << "                You can't move into a post!!! Choose another direction!" << endl;
 				break;
 			} else if (p.isElectrified() && collide(p, _player)) {
 				_player.setAsDead();
