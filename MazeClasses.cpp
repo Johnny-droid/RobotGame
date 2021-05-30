@@ -22,16 +22,16 @@ bool operator==(Position pos1, Position pos2) {
  void showTitle() {
 	// print the title screen
 	cout << "\n\n";
-    cout << "                 _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
-    cout << "                |  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
-    cout << "                | |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
-    cout << "                |  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
-    cout << "                | | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
-    cout << "                |_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ \n\n" << endl;
-	cout << "                                              1) Rules" << endl;
-	cout << "                                              2) Play" << endl;
-	cout << "                                              3) Winners" << endl;
-	cout << "                                              0) Exit\n\n"<< endl;
+    cout << "\t\t _____   ____  ____   ____ _______  __          __     _____   _____" << endl;
+    cout << "\t\t|  __ \\ / __ \\|  _ \\ / __ \\__   __| \\ \\        / /\\   |  __ \\ / ____|" << endl;
+    cout << "\t\t| |__) | |  | | |_) | |  | | | |     \\ \\  /\\  / /  \\  | |__) | (___" << endl;
+    cout << "\t\t|  _  /| |  | |  _ <| |  | | | |      \\ \\/  \\/ / /\\ \\ |  _  / \\___ \\ " << endl;
+    cout << "\t\t| | \\ \\| |__| | |_) | |__| | | |       \\  /\\  / ____ \\| | \\ \\ ____) |" << endl;
+    cout << "\t\t|_|  \\_\\\\____/|____/ \\____/  |_|        \\/  \\/_/    \\_\\_|  \\_\\_____/ \n\n" << endl;
+	cout << "\t\t\t\t\t\t1) Rules" << endl;
+	cout << "\t\t\t\t\t\t2) Play" << endl;
+	cout << "\t\t\t\t\t\t3) Winners" << endl;
+	cout << "\t\t\t\t\t\t0) Exit\n\n"<< endl;
 };
 
 int selectOption() {
@@ -80,10 +80,10 @@ void printLeaderBoard(string winnersFile) {
 	if (file.eof()) {
 		cout << "\t\tEmpty list" << endl;
 	} else {
-		cout << "                                       Player          - Time" << endl;
-		cout << "                                       ----------------------" << endl;
+		cout << "\t\t\t\t\tPlayer          - Time" << endl;
+		cout << "\t\t\t\t\t----------------------" << endl;
 		while ( getline(file, line) ) {
-			cout << "                                       " + line << endl;
+			cout << "\t\t\t\t\t" + line << endl;
 			if (file.eof()) {
 				break;
 			}
@@ -101,37 +101,37 @@ string readMazeNumber() {
     string str;
     bool success = false;
 	cout << "\n\n";
-	cout << "                    --------------------------------------------------               " << endl;
-	cout << "                    | These are the mazes you can play in. Have fun! |               " << endl;
-	cout << "                    --------------------------------------------------               " << endl;
-	cout << "                    Maze 01: The Arena                                               " << endl;
-	cout << "                    **************************     There are more       _\\/_        " << endl;
-	cout << "                    *                        *     robots like me      [____]        " << endl;
-	cout << "                    *     *  ++++++++  *     *     on the later mazes. |()()|        " << endl;
-	cout << "                    *                        *     Choose wisely.    ___\\__/___     " << endl;
-	cout << "                    *     +            +     *     Beep.      __    |__|    |__|     " << endl;
-	cout << "                    *     +     **     +     *               /__\\___/ /| [] | |     " << endl;
-	cout << "                    *     +     **     +     *                __)____/ |    | |      " << endl;
-	cout << "                    O     +            +     O               \\__/     |____|_|      " << endl;
-	cout << "                    *                        *                         | || |_/      " << endl;
-	cout << "                    *     *  ++++++++  *     *                         |_||_|        " << endl;
-	cout << "                    *                        *                        _| || |_       " << endl;
-	cout << "                    ***********O**O***********                       |___||___|      " << endl;
-	cout << "                    Maze 02: The Angry Face          Maze 03: The Cat                " << endl;
-	cout << "                    *****************************    ****O*O*O**************O*O*O****" << endl;
-	cout << "                    *                           *    *                              *" << endl;
-	cout << "                    *       +           +       *    *    +++                +++    *" << endl;
-	cout << "                    *         +       +         *    *    +   +            +   +    *" << endl;
-	cout << "                    *         * +   + *         *    *    +    +          +    +    *" << endl;
-	cout << "                    *         *       *         *    *                              *" << endl;
-	cout << "                    *         *       *         *    *            *    *            *" << endl;
-	cout << "                    *         *       *         *    *            *    *            *" << endl;
-	cout << "                    *             *             *    *                              *" << endl;
-	cout << "                    *                           *    *     +++              +++     *" << endl;
-	cout << "                    *          +++++++          *    *            *    *            *" << endl;
-	cout << "                    *        ++       ++        *    *             ****             *" << endl;
-	cout << "                    *                           *    *                              *" << endl;
-	cout << "                    ****O****O****O****O****O****    ********************************" << endl;
+	cout << "\t\t    --------------------------------------------------               " << endl;
+	cout << "\t\t    | These are the mazes you can play in. Have fun! |               " << endl;
+	cout << "\t\t    --------------------------------------------------               " << endl;
+	cout << "\t\t     Maze 01: The Arena                                               " << endl;
+	cout << "\t\t    **************************     There are more       _\\/_        " << endl;
+	cout << "\t\t    *                        *     robots like me      [____]        " << endl;
+	cout << "\t\t    *     *  ++++++++  *     *     on the later mazes. |()()|        " << endl;
+	cout << "\t\t    *                        *     Choose wisely.    ___\\__/___     " << endl;
+	cout << "\t\t    *     +            +     *     Beep.      __    |__|    |__|     " << endl;
+	cout << "\t\t    *     +     **     +     *               /__\\___/ /| [] | |     " << endl;
+	cout << "\t\t    *     +     **     +     *                __)____/ |    | |      " << endl;
+	cout << "\t\t    O     +            +     O               \\__/     |____|_|      " << endl;
+	cout << "\t\t    *                        *                         | || |_/      " << endl;
+	cout << "\t\t    *     *  ++++++++  *     *                         |_||_|        " << endl;
+	cout << "\t\t    *                        *                        _| || |_       " << endl;
+	cout << "\t\t    ***********O**O***********                       |___||___|      " << endl;
+	cout << "\t\t     Maze 02: The Angry Face          Maze 03: The Cat                " << endl;
+	cout << "\t\t    *****************************    ****O*O*O**************O*O*O****" << endl;
+	cout << "\t\t    *                           *    *                              *" << endl;
+	cout << "\t\t    *       +           +       *    *    +++                +++    *" << endl;
+	cout << "\t\t    *         +       +         *    *    +   +            +   +    *" << endl;
+	cout << "\t\t    *         * +   + *         *    *    +    +          +    +    *" << endl;
+	cout << "\t\t    *         *       *         *    *                              *" << endl;
+	cout << "\t\t    *         *       *         *    *            *    *            *" << endl;
+	cout << "\t\t    *         *       *         *    *            *    *            *" << endl;
+	cout << "\t\t    *             *             *    *                              *" << endl;
+	cout << "\t\t    *                           *    *     +++              +++     *" << endl;
+	cout << "\t\t    *          +++++++          *    *            *    *            *" << endl;
+	cout << "\t\t    *        ++       ++        *    *             ****             *" << endl;
+	cout << "\t\t    *                           *    *                              *" << endl;
+	cout << "\t\t    ****O****O****O****O****O****    ********************************\n" << endl;
 
 
     while (!success) {
@@ -316,9 +316,9 @@ bool replay() {
 	// Asks the player if he wants to continue to play or exit the game
 	int number;
     do {
-        cout << "\n\n                                              0) Exit" << endl; 
-		cout << "                                              1)Play Again" << endl; 
-		cout << "\n                Enter option: ";
+        cout << "\n\n\t\t\t\t\t\t0) Exit" << endl; 
+		cout << "\t\t\t\t\t\t1)Play Again" << endl; 
+		cout << "\n\t\tEnter option: ";
         cin >> number;
         if ( (number != 0 && number != 1)  || cin.fail()) {
             if (cin.eof()) {
