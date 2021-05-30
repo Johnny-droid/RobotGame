@@ -142,13 +142,13 @@ string readMazeNumber() {
             if (cin.eof()) {
                 exit(0);
             }
-            cout << "                This is an invalid maze number!" << endl;
-			cout << "                Please bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
+            cout << "\t\tThis is an invalid maze number!" << endl;
+			cout << "\t\tPlease bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
             success = false;
         }
         else if (n > 3 && n < 100) {
-            cout << "                Actually, this game has only 3 mazes so please choose a smaller number." << endl;
-			cout << "                Pfft, lazy developers.\n" << endl;
+            cout << "\t\tActually, this game has only 3 mazes so please choose a smaller number." << endl;
+			cout << "\t\tPfft, lazy developers.\n" << endl;
             success = false;
         }
     }
@@ -168,21 +168,21 @@ string readLeaderboardNumber() {
 	bool success = false;
 	int n;
 	string str;
-	cout << "\n                Welcome to the leaderboards!" << endl;
+	cout << "\n\t\ttWelcome to the leaderboards!" << endl;
 	while (!success) {
-		cout << "                Please select a maze number to see its winners: ";
+		cout << "\t\tPlease select a maze number to see its winners: ";
 		cin >> n;
 		if (n < 0 || n > 99 || cin.fail()) {
 			if (cin.eof()) {
 				exit(0);
 			}
-			cout << "                This is an invalid maze number!" << endl;
-			cout << "                Please bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
+			cout << "\t\tThis is an invalid maze number!" << endl;
+			cout << "\t\tPlease bear in mind you can't use negative numbers nor one with more than two digits.\n" << endl;
 			success = false;
 		}
 		else if (n > 3 && n < 100) {
-			cout << "                Actually, this game has only 3 mazes so please choose a smaller number." << endl;
-			cout << "                Pfft, lazy developers.\n" << endl;
+			cout << "\t\tActually, this game has only 3 mazes so please choose a smaller number." << endl;
+			cout << "\t\tPfft, lazy developers.\n" << endl;
 			success = false;
 		} else {
 			success = true;
@@ -219,7 +219,7 @@ string readName() {
     // if smaller, fills the name with whitespace
     string name;
     do {
-        cout << "                Enter your name: ";
+        cout << "\t\tEnter your name: ";
         cin >> name;
         if ( name.length() > 15 || cin.fail()) {
             if (cin.eof()) {
@@ -227,7 +227,7 @@ string readName() {
             }
             cin.clear();
             cin.ignore(100000, '\n');
-            cout << "                Invalid input!\n";
+            cout << "\t\tInvalid input!\n";
         }
     } while (name.length() > 15);
 
@@ -256,12 +256,12 @@ void gameOver(int x, int time, string filename) {
     // ask the name
     // sort the winning times
     if (x == 2) {
-        cout << "                Congratulations, you won!!!" << endl;
+        cout << "\t\tCongratulations, you won!!!" << endl;
 
         ifstream file;
         file.open(filename);
         if (!file.is_open()) {
-            cout << "                File not found" << endl;
+            cout << "\t\tFile not found" << endl;
         } else {
             vector<PlayerTable> v = {};
             PlayerTable p;
@@ -287,7 +287,7 @@ void gameOver(int x, int time, string filename) {
             }
             bubbleSort(v);
             
-            cout << "\n                New times: " << endl;
+            cout << "\n\t\tNew times: " << endl;
             for(int i = 0; i < v.size(); i++) {
                 temp << v[i].name << "  - " << v[i].time << endl;
                 cout << v[i].name << "  - " << v[i].time << endl;
@@ -297,11 +297,11 @@ void gameOver(int x, int time, string filename) {
             const char* filename_c = filename.c_str();
             remove(filename_c);
             rename("temp.txt", filename_c);
-            cout << "\n                I hope you have enjoyed our game!" << endl;
+            cout << "\n\t\tI hope you have enjoyed our game!" << endl;
         }
     } else {
-        cout << "                Game Over!" << endl;
-        cout << "                You Lost" << endl;
+        cout << "\t\tGame Over!" << endl;
+        cout << "\t\tYou Lost" << endl;
     }
 }
 
@@ -318,7 +318,7 @@ bool replay() {
             }
             cin.clear();
             cin.ignore(100000, '\n');
-            cout << "                Invalid input!\n";
+            cout << "\t\tInvalid input!\n";
         }
     } while (number != 0 && number != 1);
 
@@ -614,7 +614,7 @@ Game::Game(const string & filename) {
     file.open(filename);
     if (!file.is_open()) {
 		_valid = false;
-        cout << "                Maze not found!" << endl;
+        cout << "\t\tMaze not found!" << endl;
     } else {
 		_valid = true;
 		vector<Post> posts = {};
@@ -748,7 +748,7 @@ void Game::readHumanPlay() {
 	Position mov;
     do {
         do {
-            cout << "                Enter key: ";
+            cout << "\t\tEnter key: ";
             cin >> ch;
             cin.ignore(10000, '\n');
             ch = toupper(ch);
@@ -758,7 +758,7 @@ void Game::readHumanPlay() {
                 }
                 cin.clear();
                 cin.ignore(100000, '\n');
-                cout << "                Invalid input!\n";
+                cout << "\t\tInvalid input!\n";
             }
             
         } while (ch != 'Q' && ch != 'W' && ch != 'E' && ch != 'A' && ch != 'S' && ch != 'D' && ch != 'Z' && ch != 'X' && ch != 'C' );
@@ -797,7 +797,7 @@ void Game::readHumanPlay() {
 		for (Robot r: _robots) {
 			if (!r.isAlive() && collide(r, _player)) {
 				validPos = false;
-				cout << "                You can't move into a destroyed robot!!! Choose another direction!" << endl;
+				cout << "\t\tYou can't move into a destroyed robot!!! Choose another direction!" << endl;
 				break;
 			}
 		}
@@ -805,7 +805,7 @@ void Game::readHumanPlay() {
 		for (Post p: _maze.getPosts()) {
 			if (!p.isElectrified() && collide(p, _player)) {
 				validPos = false;
-				cout << "                You can't move into a post!!! Choose another direction!" << endl;
+				cout << "\t\tYou can't move into a post!!! Choose another direction!" << endl;
 				break;
 			} else if (p.isElectrified() && collide(p, _player)) {
 				_player.setAsDead();
