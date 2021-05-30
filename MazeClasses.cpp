@@ -38,7 +38,7 @@ int selectOption() {
 	// gets the option number
 	int chosenOption;
 	do {
-		cout << "                Enter option: ";
+		cout << "\t\tEnter option: ";
 		cin >> chosenOption;
 		if ((chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3) || cin.fail()) {
 			if (cin.eof()) {
@@ -46,7 +46,7 @@ int selectOption() {
 			}
 			cin.clear();
 			cin.ignore(100000, '\n');
-			cout << "                Invalid input!\n";
+			cout << "\t\tInvalid input!\n";
 		}
 	} while (chosenOption != 0 && chosenOption != 1 && chosenOption != 2 && chosenOption != 3);
 	return chosenOption;
@@ -78,7 +78,7 @@ void printLeaderBoard(string winnersFile) {
 	getline(file, line);
 	cout << endl;
 	if (file.eof()) {
-		cout << "                Empty list" << endl;
+		cout << "\t\tEmpty list" << endl;
 	} else {
 		cout << "                                       Player          - Time" << endl;
 		cout << "                                       ----------------------" << endl;
@@ -91,7 +91,7 @@ void printLeaderBoard(string winnersFile) {
 	};
 	cout << endl;
 	file.close();
-	cout << "                Press any key to continue " << endl;
+	cout << "\t\tPress any key to continue " << endl;
 	_getch();
 }
 
@@ -136,7 +136,7 @@ string readMazeNumber() {
 
     while (!success) {
         success = true;
-        cout << "\n                Please enter a maze number: ";
+		cout << "\t\tPlease enter a maze number: ";
         cin >> n;
         if ( n < 0 || n > 99 || cin.fail()) {
             if (cin.eof()) {

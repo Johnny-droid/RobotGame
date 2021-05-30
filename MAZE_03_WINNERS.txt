@@ -4,6 +4,7 @@ JohnnyGame       - 51
 John             - 52
 Asdrubal         - 59
 Joao             - 70
-CoolPlayer       - 80
+Jogador Fixe     - 71
+Cool Player      - 80
 Antonio          - 110
 Pro Gamer        - 530

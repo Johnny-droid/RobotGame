@@ -3,6 +3,7 @@ Player          - Time
 John             - 12
 Johnny           - 14
 Anto             - 29
+Jogador Fixe     - 34
 Asdrubal         - 51
 Joao             - 75
 Antonio          - 100
