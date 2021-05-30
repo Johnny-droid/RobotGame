@@ -864,6 +864,12 @@ void Game::updateGame() {
 				}
 			}
 		}
+
+		for (Position gate : _maze.getGates()) {
+			if (gate == r.getPosition() + r.getMovement()) {
+				r.setMovementZero();
+			}
+		}
 	}
 
 	// checks for robot collisions with each other
